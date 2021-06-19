@@ -1,15 +1,15 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
 #include <QAction>
 #include <QPainter>
 
 #include <iostream>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      ui(new Ui::MainWindow),
-      m_previousSliderValue(100)
+MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    m_previousSliderValue(100),
+    m_ActiveFileName("")
 {
     ui->setupUi(this);
     setMinimumSize(1, 1);
@@ -21,7 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     fileMenu = menuBar()->addMenu(tr("&File"));
     QAction *openAct = new QAction(tr("&Open"), this);
     fileMenu->addAction(openAct);
-    connect(openAct,SIGNAL(triggered()),this,SLOT(open()));
+    connect(openAct,SIGNAL(triggered()),this,SLOT(Open()));
+
+    QAction *copyAct = new QAction(tr("&Save Copy"), this);
+    fileMenu->addAction(copyAct);
+    connect(copyAct,SIGNAL(triggered()),this,SLOT(SaveFileCopy()));
 }
 
 MainWindow::~MainWindow()
@@ -29,37 +33,48 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::DisplayImage(const QString filename)
+void MainWindow::DisplayImage(const QString &filename)
 {
     QImageReader imagereader(filename);
     m_InputImagePixMap.load(filename);
     ui->imageLabel->setPixmap(m_InputImagePixMap.scaled(ui->imageLabel->width(),
-                                                      ui->imageLabel->height(),
-                                                      Qt::KeepAspectRatio));
+                                                        ui->imageLabel->height(),
+                                                        Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     ui->horizontalSlider->show();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
+    Q_UNUSED(e);
     ui->imageLabel->setPixmap(m_InputImagePixMap.scaled(ui->imageLabel->width(),
-                                                      ui->imageLabel->height(),
+                                                        ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
+
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    QPainter panPainter;
-    panPainter.drawImage(e->pos(),m_InputImagePixMap.toImage());
     std::cout << e->x() << " " << e->y() << std::endl;
+    auto inputImageRect = m_InputImagePixMap.rect();
+    inputImageRect.translate(e->pos());
+    update();
 
 }
 
-void MainWindow::open()
+void MainWindow::Open()
 {
-    QString m_FileName = QFileDialog::getOpenFileName(this,
-                 tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    DisplayImage(m_FileName);
+    m_ActiveFileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
+    DisplayImage(m_ActiveFileName);
+}
+
+void MainWindow::SaveFileCopy()
+{
+    QFile currentFile(m_ActiveFileName);
+    QFileInfo fileInfo(currentFile.fileName());
+    QString filename(fileInfo.fileName());
+    std::cout << filename.toStdString() << std::endl;
 }
 
 

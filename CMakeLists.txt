@@ -22,10 +22,9 @@ set(SOURCE
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h)
 set(UI
-    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
 
 add_subdirectory(Tools)
-add_subdirectory(Events)
 
 add_executable(imageviewer
     ${SOURCE}

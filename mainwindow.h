@@ -19,13 +19,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayImage(const QString filename);
+    void DisplayImage(const QString &filename);
     void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseDragEvent(QMouseEvent *e);
 
 public slots:
-    void open();
+    void Open();
+    void SaveFileCopy();
 
 private slots:
     void on_horizontalSlider_valueChanged(int value);
@@ -34,6 +35,7 @@ private:
     Ui::MainWindow *ui;
     QPixmap m_InputImagePixMap;
     int m_previousSliderValue;
+    QString m_ActiveFileName;
 
 };
 #endif // MAINWINDOW_H
