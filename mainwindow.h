@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <datahandler.h>
+
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QImageReader>
@@ -19,7 +21,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void DisplayImage(const QString &filename);
+    void DisplayImage(const QString &fileName);
     void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseDragEvent(QMouseEvent *e);
@@ -33,9 +35,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QPixmap m_InputImagePixMap;
-    int m_previousSliderValue;
-    QString m_ActiveFileName;
 
 };
 #endif // MAINWINDOW_H

@@ -5,32 +5,36 @@
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.ui" line="14"/>
-        <location filename="EagleEyeSoftware-Build/imageviewer_autogen/include/ui_mainwindow.h" line="121"/>
         <source>MainWindow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="21"/>
+        <location filename="mainwindow.cpp" line="24"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="22"/>
+        <location filename="mainwindow.cpp" line="25"/>
         <source>&amp;Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="26"/>
+        <location filename="mainwindow.cpp" line="29"/>
         <source>&amp;Save Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="68"/>
+        <location filename="mainwindow.cpp" line="45"/>
+        <source>Cannot load %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="77"/>
         <source>Open Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="68"/>
+        <location filename="mainwindow.cpp" line="77"/>
         <source>Image Files (*.png *.jpg *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
