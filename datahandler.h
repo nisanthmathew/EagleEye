@@ -9,8 +9,17 @@ namespace EagleEye {
 
 class DataHandler
 {
+private:
+    DataHandler():
+        m_PreviousSliderValue(100)
+    {
+
+    }
 public:
-    DataHandler();
+    static DataHandler& DATA_HANDLER(){
+        static DataHandler theInstance;
+        return theInstance;
+    }
 
     QPixmap InputImagePixMap() const;
     void SetInputImagePixMap(const QPixmap &InputImagePixMap);

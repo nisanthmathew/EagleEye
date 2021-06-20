@@ -7,7 +7,7 @@
 #include <QDate>
 
 #include <iostream>
-EagleEye::DataHandler *DATA_HANDLER = nullptr;
+
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->setupUi(this);
     setMinimumSize(1, 1);
     setWindowTitle("EagleEye");
-    DATA_HANDLER = new EagleEye::DataHandler();
     ui->horizontalSlider->setRange(100,400);
     ui->horizontalSlider->setTickInterval(1);
     ui->horizontalSlider->hide();
@@ -33,19 +32,18 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
 
 MainWindow::~MainWindow()
 {
-    delete DATA_HANDLER;
     delete ui;
 }
 
 void MainWindow::DisplayImage(const QString &fileName)
 {
-    if (!DATA_HANDLER->InputImagePixMap().load(fileName))
+    if (!EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().load(fileName))
     {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Cannot load %1").arg(QDir::toNativeSeparators(fileName)));
     }
 
-    ui->imageLabel->setPixmap(DATA_HANDLER->InputImagePixMap().scaled(ui->imageLabel->width(),
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
@@ -55,7 +53,7 @@ void MainWindow::DisplayImage(const QString &fileName)
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
     Q_UNUSED(e);
-    ui->imageLabel->setPixmap(DATA_HANDLER->InputImagePixMap().scaled(ui->imageLabel->width(),
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
 
@@ -63,10 +61,11 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    auto inputImageRect = DATA_HANDLER->InputImagePixMap().rect();
+    auto inputImageRect = EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().rect();
     QPainter panPainter;
-    panPainter.drawImage(inputImageRect,DATA_HANDLER->InputImagePixMap().toImage());
-    std::cout << e->x() << " " << e->y() << std::endl;
+    panPainter.drawImage(inputImageRect,EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().toImage());
+    QString message {QString("MainWindow::mousePressEvent(): Mouse x: %1, Mouse y: %2").arg(e->x()).arg(e->y())};
+    EagleEye::Logger::CENTRAL_LOGGER().LogMessage(message,EagleEye::LOGLEVEL::DEBUG);
     update();
 
 }
@@ -75,24 +74,35 @@ void MainWindow::Open()
 {
     QString activeFileName = QFileDialog::getOpenFileName(this,
                                                     tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    DATA_HANDLER->SetActiveFileName(activeFileName);
+    EagleEye::DataHandler::DATA_HANDLER().SetActiveFileName(activeFileName);
     QImageReader imageReader(activeFileName);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    DATA_HANDLER->SetInputImagePixMap(newPixMap);
+    EagleEye::DataHandler::DATA_HANDLER().SetInputImagePixMap(newPixMap);
     DisplayImage(activeFileName);
 }
 
 void MainWindow::SaveFileCopy()
 {
-    auto imageCopy = DATA_HANDLER->InputImagePixMap();
-    imageCopy.save(QDate::currentDate().toString() + DATA_HANDLER->ActiveFileName());
+    auto imageCopy = EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap();
+    if (imageCopy.isNull())
+    {
+        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
+                                 tr("There is no image to save."));
+        return;
+    }
+    auto newFileName = QDate::currentDate().toString() + EagleEye::DataHandler::DATA_HANDLER().ActiveFileName();
+    if (!imageCopy.save(newFileName))
+    {
+        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
+                                 tr("Unable to save image."));
+    }
 }
 
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-    float zoomFactor = static_cast<float>(value) / DATA_HANDLER->PreviousSliderValue();
-    ui->imageLabel->setPixmap(DATA_HANDLER->InputImagePixMap().scaled(static_cast<int>(ui->imageLabel->width() * zoomFactor),
+    float zoomFactor = static_cast<float>(value) / EagleEye::DataHandler::DATA_HANDLER().PreviousSliderValue();
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(static_cast<int>(ui->imageLabel->width() * zoomFactor),
                                                         static_cast<int>(ui->imageLabel->height() * zoomFactor),
                                                         Qt::KeepAspectRatio));
 }

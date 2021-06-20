@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <datahandler.h>
+#include <logger.h>
 
 #include <QMainWindow>
 #include <QFileDialog>

@@ -1,16 +1,11 @@
 #include "datahandler.h"
+#include "logger.h"
 
 #include <QMutexLocker>
 
 #include <iostream>
 
 namespace EagleEye{
-
-DataHandler::DataHandler():
-    m_PreviousSliderValue(100)
-{
-
-}
 
 QPixmap DataHandler::InputImagePixMap() const
 {
@@ -21,9 +16,9 @@ QPixmap DataHandler::InputImagePixMap() const
 void DataHandler::SetInputImagePixMap(const QPixmap &InputImagePixMap)
 {
     QMutexLocker locker(m_ImageMutex);
-    std::cout << "InputImagePixMap" << std::endl;
-    std::cout << InputImagePixMap.physicalDpiX() << std::endl;
-    std::cout << InputImagePixMap.physicalDpiY() << std::endl;
+    QString message {QString("InputImagePixMap DpiX: %1, DpiY: %2").arg(InputImagePixMap.physicalDpiX()).
+                    arg(InputImagePixMap.physicalDpiY())};
+    Logger::CENTRAL_LOGGER().LogMessage(message,EagleEye::LOGLEVEL::DEBUG);
     m_InputImagePixMap = InputImagePixMap;
 }
 

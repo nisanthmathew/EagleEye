@@ -18,11 +18,13 @@ set(TS_FILES imageviewer_en_IN.ts)
 set(SOURCE
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger.cpp)
 
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger.h)
 set(UI
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
 
