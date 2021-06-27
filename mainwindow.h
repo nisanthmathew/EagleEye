@@ -1,14 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <datahandler.h>
-#include <logger.h>
-
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QImageReader>
 #include <QAction>
 #include <QResizeEvent>
+
+#include "datahandler.h"
+#include "logger.h"
+#include "filereadwrite.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

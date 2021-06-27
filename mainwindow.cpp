@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->horizontalSlider->setRange(100,400);
     ui->horizontalSlider->setTickInterval(1);
     ui->horizontalSlider->hide();
-
     QMenu *fileMenu;
     fileMenu = menuBar()->addMenu(tr("&File"));
     QAction *openAct = new QAction(tr("&Open"), this);
