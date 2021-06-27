@@ -37,13 +37,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayImage(const QString &fileName)
 {
-    if (!EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().load(fileName))
+    if (!EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().load(fileName))
     {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Cannot load %1").arg(QDir::toNativeSeparators(fileName)));
     }
 
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(ui->imageLabel->width(),
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
@@ -53,7 +53,7 @@ void MainWindow::DisplayImage(const QString &fileName)
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
     Q_UNUSED(e);
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(ui->imageLabel->width(),
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
 
@@ -61,9 +61,9 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    auto inputImageRect = EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().rect();
+    auto inputImageRect = EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().rect();
     QPainter panPainter;
-    panPainter.drawImage(inputImageRect,EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().toImage());
+    panPainter.drawImage(inputImageRect,EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().toImage());
     QString message {QString("MainWindow::mousePressEvent(): Mouse x: %1, Mouse y: %2").arg(e->x()).arg(e->y())};
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(message,EagleEye::LOGLEVEL::DEBUG);
     update();
@@ -77,20 +77,20 @@ void MainWindow::Open()
     EagleEye::DataHandler::DATA_HANDLER().SetActiveFileName(activeFileName);
     QImageReader imageReader(activeFileName);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    EagleEye::DataHandler::DATA_HANDLER().SetInputImagePixMap(newPixMap);
+    EagleEye::DataHandler::DATA_HANDLER().SetCurrentImagePixMap(newPixMap);
     DisplayImage(activeFileName);
 }
 
 void MainWindow::SaveFileCopy()
 {
-    auto imageCopy = EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap();
+    auto imageCopy = EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap();
     if (imageCopy.isNull())
     {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("There is no image to save."));
         return;
     }
-    auto newFileName = QDate::currentDate().toString() + EagleEye::DataHandler::DATA_HANDLER().ActiveFileName();
+    auto newFileName = QDate::currentDate().toString() + EagleEye::DataHandler::DATA_HANDLER().GetActiveFileName();
     if (!imageCopy.save(newFileName))
     {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
@@ -101,8 +101,8 @@ void MainWindow::SaveFileCopy()
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-    float zoomFactor = static_cast<float>(value) / EagleEye::DataHandler::DATA_HANDLER().PreviousSliderValue();
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().InputImagePixMap().scaled(static_cast<int>(ui->imageLabel->width() * zoomFactor),
+    float zoomFactor = static_cast<float>(value) / EagleEye::DataHandler::DATA_HANDLER().GetPreviousSliderValue();
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(static_cast<int>(ui->imageLabel->width() * zoomFactor),
                                                         static_cast<int>(ui->imageLabel->height() * zoomFactor),
                                                         Qt::KeepAspectRatio));
 }

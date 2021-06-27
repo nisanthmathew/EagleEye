@@ -21,13 +21,13 @@ public:
         return theInstance;
     }
 
-    QPixmap InputImagePixMap() const;
-    void SetInputImagePixMap(const QPixmap &InputImagePixMap);
+    QPixmap GetCurrentImagePixMap() const;
+    void SetCurrentImagePixMap(const QPixmap &CurrentImagePixMap);
 
-    int PreviousSliderValue() const;
+    int GetPreviousSliderValue() const;
     void SetPreviousSliderValue(int previousSliderValue);
 
-    QString ActiveFileName() const;
+    QString GetActiveFileName() const;
     void SetActiveFileName(const QString &ActiveFileName);
 
 private:

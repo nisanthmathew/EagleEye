@@ -8,7 +8,7 @@
 #include <QMutexLocker>
 
 #include <iostream>
-#include<fstream>
+#include <fstream>
 
 namespace  EagleEye {
 
@@ -19,14 +19,15 @@ enum LOGLEVEL{
     DEBUG
 };
 
-class Logger
+class Logger : public QObject
 {
+    Q_OBJECT
 private:
     Logger()
     {
         QString filename {QDate::currentDate().toString() + "Log.txt"};
         QFile logFile{filename};
-        QTimer *timer = new QTimer();
+        QTimer *timer = new QTimer(this);
         QObject::connect(timer, &QTimer::timeout, [this, filename](){
             QMutexLocker locker (m_LogMutex);
             if (m_LogVector.empty())
