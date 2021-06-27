@@ -13,12 +13,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE
     ${SOURCE}
-    ${CMAKE_CURRENT_SOURCE_DIR}/evcolourprofiles.cpp
     PARENT_SCPOE
     )
 
 set(HEADERS
     ${HEADERS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/evcolourprofiles.h
     PARENT_SCPOE
     )

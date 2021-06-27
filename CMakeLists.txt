@@ -29,7 +29,7 @@ set(UI
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
 
 add_subdirectory(Tools)
-
+add_subdirectory(Tests)
 add_executable(imageviewer
     ${SOURCE}
     ${HEADERS}
@@ -42,11 +42,6 @@ option(BUILD_TESTING "Enable tests" OFF)
 target_link_libraries(imageviewer PRIVATE Qt5::Widgets)
 
 # add the binary tree to the search path for include files
-target_include_directories(imageviewer PRIVATE
-    "${PROJECT_BINARY_DIR}"
-    "${PROJECT_SOURCE_DIR}/Events"
-    )
-
 target_include_directories(imageviewer PRIVATE
     "${PROJECT_BINARY_DIR}"
     "${PROJECT_SOURCE_DIR}/Tools"
