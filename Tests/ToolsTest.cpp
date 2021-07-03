@@ -28,9 +28,9 @@ ToolsTest::~ToolsTest()
 
 void ToolsTest::SaveFileCopy()
 {
-    FileReadWrite ImageWriter;
-    bool success {ImageWriter.SaveImageCopy()};
-    QCOMPARE(success, true);
+    EagleEye::FileReadWrite ImageWriter;
+    QPixmap imageToSave;
+    QCOMPARE(ImageWriter.SaveImageCopy(imageToSave), false);
 }
 
 

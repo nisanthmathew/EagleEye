@@ -14,12 +14,13 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-SET(HDRS_TEST
+set(HDRS_TEST
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/filereadwrite.h
 )
 
-SET(SRCS_TEST
+set(SRCS_TEST
   ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}}/../Tools/filereadwrite.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/filereadwrite.cpp
 )
 
 
@@ -29,7 +30,7 @@ SET(EAGLEEYE_TEST_INCLUDE_PATH
 )
 
 
-INCLUDE_DIRECTORIES(
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${EAGLEEYE_TEST_INCLUDE_PATH}
 )
@@ -37,7 +38,7 @@ INCLUDE_DIRECTORIES(
 enable_testing()
 
 
-ADD_EXECUTABLE(EagleEyeTests
+add_executable(EagleEyeTests
   ${SRCS_TEST}
   ${HDRS_TEST}
 )

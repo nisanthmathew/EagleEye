@@ -2,7 +2,7 @@
 #define FILEREADWRITE_H
 
 #include <QObject>
-
+namespace EagleEye{
 class FileReadWrite : public QObject
 {
     Q_OBJECT
@@ -10,7 +10,7 @@ public:
     FileReadWrite();
     ~FileReadWrite();
 
-    bool SaveImageCopy();
+    bool SaveImageCopy(const QPixmap &imageToSave);
 };
-
+}
 #endif // FILEREADWRITE_H
