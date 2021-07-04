@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(EagleEyeTests LANGUAGES CXX)
-find_package(Qt5Test REQUIRED)
-find_package(Qt5 COMPONENTS Core REQUIRED)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets Test REQUIRED)
+SET(QT_TEST_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Test)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -15,18 +16,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 set(HDRS_TEST
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/filereadwrite.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../datahandler.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../logger.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/imagereadwrite.h
 )
 
 set(SRCS_TEST
-  ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/filereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../datahandler.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/imagereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
 )
 
 
 SET(EAGLEEYE_TEST_INCLUDE_PATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/tests
+    ${CMAKE_CURRENT_SOURCE_DIR}}
     ${CMAKE_CURRENT_SOURCE_DIR}}/../Tools
+    ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 
 
@@ -45,8 +51,7 @@ add_executable(EagleEyeTests
 
 
 TARGET_LINK_LIBRARIES(EagleEyeTests
-  Qt5::Test
-  Qt5::Gui
+  ${QT_TEST_LIBRARIES}
 )
 
 ADD_TEST(NAME EagleEyeTests COMMAND EagleEyeTests)

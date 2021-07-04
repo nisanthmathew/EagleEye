@@ -11,19 +11,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(LIBRARY_NAME ${PROJECT_NAME}_tools)
 
-SET(${HEADERS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/filereadwrite.h
-    PARENT_SCOPE
-)
-
 set(${SOURCE}
-    ${CMAKE_CURRENT_SOURCE_DIR}/filereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
     PARENT_SCOPE
 )
 
-add_library(${LIBRARY_NAME} SHARED
-    filereadwrite.cpp
-    filereadwrite.h)
+SET(${HEADERS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
+    PARENT_SCOPE
+)
+
+add_library(${LIBRARY_NAME} STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
+    )
 
 target_link_libraries(${LIBRARY_NAME}
-    ${QT_LIBRARIES})
+     ${QT_LIBRARIES}
+    )

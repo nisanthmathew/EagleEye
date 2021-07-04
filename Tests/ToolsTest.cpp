@@ -1,6 +1,6 @@
 #include <QTest>
 #include <QObject>
-#include <filereadwrite.h>
+#include <imagereadwrite.h>
 class ToolsTest : public QObject
 {
     Q_OBJECT
@@ -28,7 +28,7 @@ ToolsTest::~ToolsTest()
 
 void ToolsTest::SaveFileCopy()
 {
-    EagleEye::FileReadWrite ImageWriter;
+    EagleEye::ImageReadWrite ImageWriter;
     QPixmap imageToSave;
     QCOMPARE(ImageWriter.SaveImageCopy(imageToSave), false);
 }

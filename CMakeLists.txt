@@ -12,9 +12,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-SET(QT_LIBRARIES Qt5::Core Qt5::Widgets Qt5::Gui)
-
-set(TS_FILES imageviewer_en_IN.ts)
+SET(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
 
 add_subdirectory(Tools)
 
@@ -48,6 +46,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 # add the binary tree to the search path for include files
 target_include_directories(${PROJECT_NAME} PUBLIC
                           "${PROJECT_BINARY_DIR}"
+                          "${PROJECT_SOURCE_DIR}"
                           "${PROJECT_SOURCE_DIR}/Tools"
                           )
 IF (BUILD_TESTING)

@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->horizontalSlider->setRange(100,400);
     ui->horizontalSlider->setTickInterval(1);
     ui->horizontalSlider->hide();
+
+    m_ImageReadWrite = std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite());
     QMenu *fileMenu;
     fileMenu = menuBar()->addMenu(tr("&File"));
     QAction *openAct = new QAction(tr("&Open"), this);
@@ -71,13 +73,11 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
 void MainWindow::Open()
 {
-    QString activeFileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    EagleEye::DataHandler::DATA_HANDLER().SetActiveFileName(activeFileName);
-    QImageReader imageReader(activeFileName);
-    QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    EagleEye::DataHandler::DATA_HANDLER().SetCurrentImagePixMap(newPixMap);
-    DisplayImage(activeFileName);
+    if (m_ImageReadWrite->LoadImage())
+        DisplayImage(EagleEye::DataHandler::DATA_HANDLER().GetActiveFileName());
+    else
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::Open(): Failed to load image",
+                                                      EagleEye::LOGLEVEL::DEBUG);
 }
 
 void MainWindow::SaveFileCopy()

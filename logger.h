@@ -51,7 +51,7 @@ public:
         static Logger theInstance;
         return theInstance;
     }
-    void LogMessage(QString &message, LOGLEVEL loglevel);
+    void LogMessage(QString message, LOGLEVEL loglevel);
 };
 }
 

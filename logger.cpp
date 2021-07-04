@@ -3,7 +3,7 @@
 #include <sstream>
 namespace EagleEye{
 
-void EagleEye::Logger::LogMessage(QString &message, EagleEye::LOGLEVEL loglevel)
+void EagleEye::Logger::LogMessage(QString message, EagleEye::LOGLEVEL loglevel)
 {    
     std::string loglevelString;
     switch (loglevel) {
