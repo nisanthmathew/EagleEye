@@ -27,12 +27,12 @@ public:
     int GetPreviousSliderValue() const;
     void SetPreviousSliderValue(int previousSliderValue);
 
-    QString GetActiveFileName() const;
-    void SetActiveFileName(const QString &ActiveFileName);
+    QString GetActiveFilePath() const;
+    void SetActiveFilePath(const QString &ActiveFilePath);
 
 private:
     QPixmap m_InputImagePixMap;
-    QString m_ActiveFileName;
+    QString m_ActiveFilePath;
     int m_PreviousSliderValue;
     QMutex *m_CommonMutex;
     QMutex *m_ImageMutex;

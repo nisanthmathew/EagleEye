@@ -74,7 +74,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 void MainWindow::Open()
 {
     if (m_ImageReadWrite->LoadImage())
-        DisplayImage(EagleEye::DataHandler::DATA_HANDLER().GetActiveFileName());
+        DisplayImage(EagleEye::DataHandler::DATA_HANDLER().GetActiveFilePath());
     else
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::Open(): Failed to load image",
                                                       EagleEye::LOGLEVEL::DEBUG);
@@ -83,18 +83,7 @@ void MainWindow::Open()
 void MainWindow::SaveFileCopy()
 {
     auto imageCopy = EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap();
-    if (imageCopy.isNull())
-    {
-        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("There is no image to save."));
-        return;
-    }
-    auto newFileName = QDate::currentDate().toString() + EagleEye::DataHandler::DATA_HANDLER().GetActiveFileName();
-    if (!imageCopy.save(newFileName))
-    {
-        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("Unable to save image."));
-    }
+    m_ImageReadWrite->SaveImageCopy(imageCopy);
 }
 
 

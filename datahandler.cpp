@@ -34,15 +34,15 @@ void DataHandler::SetPreviousSliderValue(int previousSliderValue)
     m_PreviousSliderValue = previousSliderValue;
 }
 
-QString DataHandler::GetActiveFileName() const
+QString DataHandler::GetActiveFilePath() const
 {
     QMutexLocker locker(m_CommonMutex);
-    return m_ActiveFileName;
+    return m_ActiveFilePath;
 }
 
-void DataHandler::SetActiveFileName(const QString &ActiveFileName)
+void DataHandler::SetActiveFilePath(const QString &ActiveFilePath)
 {
     QMutexLocker locker(m_CommonMutex);
-    m_ActiveFileName = ActiveFileName;
+    m_ActiveFilePath = ActiveFilePath;
 }
 }

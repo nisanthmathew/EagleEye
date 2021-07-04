@@ -16,7 +16,7 @@ bool ImageReadWrite::LoadImage()
 {
     QString activeFileName = QFileDialog::getOpenFileName(this,
                                                          tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    EagleEye::DataHandler::DATA_HANDLER().SetActiveFileName(activeFileName);
+    EagleEye::DataHandler::DATA_HANDLER().SetActiveFilePath(activeFileName);
     QImageReader imageReader(activeFileName);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
     EagleEye::DataHandler::DATA_HANDLER().SetCurrentImagePixMap(newPixMap);
@@ -29,6 +29,17 @@ bool ImageReadWrite::SaveImageCopy(const QPixmap &imageToSave)
     {
         return  false;
     }
-    return true;
+
+    auto newFileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
+
+    if (!imageToSave.save(newFileName))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 }
