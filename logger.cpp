@@ -23,10 +23,12 @@ void EagleEye::Logger::LogMessage(QString message, EagleEye::LOGLEVEL loglevel)
         break;
     }
     std::stringstream ss;
-    ss << message.toStdString() << "; " << loglevelString << "; " << QDateTime::currentDateTime().toString().toStdString();
+    ss << QDateTime::currentDateTime().toString(Qt::ISODateWithMs).toStdString() <<
+          "; " << message.toStdString() << "; " << loglevelString;
     {
         QMutexLocker locker (m_LogMutex);
         m_LogVector.push_back(ss.str());
     }
+    std::cout << ss.str() << std::endl;
 }
 }

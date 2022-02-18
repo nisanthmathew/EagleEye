@@ -74,10 +74,17 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 void MainWindow::Open()
 {
     if (m_ImageReadWrite->LoadImage())
-        DisplayImage(EagleEye::DataHandler::DATA_HANDLER().GetActiveFilePath());
+    {
+        const QString filePath {EagleEye::DataHandler::DATA_HANDLER().GetActiveFilePath()};
+        DisplayImage(filePath);
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("MainWindow::Open(): loading image %1").arg(filePath),
+                                                      EagleEye::LOGLEVEL::DEBUG);
+    }
     else
+    {
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::Open(): Failed to load image",
                                                       EagleEye::LOGLEVEL::DEBUG);
+    }
 }
 
 void MainWindow::SaveFileCopy()

@@ -25,7 +25,7 @@ class Logger : public QObject
 private:
     Logger()
     {
-        QString filename {QDate::currentDate().toString() + "Log.txt"};
+        QString filename {QDate::currentDate().toString(Qt::ISODate) + ".txt"};
         QFile logFile{filename};
         QTimer *timer = new QTimer(this);
         QObject::connect(timer, &QTimer::timeout, [this, filename](){
