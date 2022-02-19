@@ -1,5 +1,6 @@
 #include "datahandler.h"
 #include "logger.h"
+#include "displayformat.h"
 
 #include <QMutexLocker>
 
@@ -16,9 +17,6 @@ QPixmap DataHandler::GetCurrentImagePixMap() const
 void DataHandler::SetCurrentImagePixMap(const QPixmap &CurrentImagePixMap)
 {
     QMutexLocker locker(m_ImageMutex);
-    QString message {QString("GetCurrentImagePixMap DpiX: %1, DpiY: %2").arg(CurrentImagePixMap.physicalDpiX()).
-                    arg(CurrentImagePixMap.physicalDpiY())};
-    Logger::CENTRAL_LOGGER().LogMessage(message,EagleEye::LOGLEVEL::DEBUG);
     m_InputImagePixMap = CurrentImagePixMap;
 }
 

@@ -20,15 +20,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->horizontalSlider->hide();
 
     m_ImageReadWrite = std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite());
-    QMenu *fileMenu;
-    fileMenu = menuBar()->addMenu(tr("&File"));
-    QAction *openAct = new QAction(tr("&Open"), this);
-    fileMenu->addAction(openAct);
-    connect(openAct,SIGNAL(triggered()),this,SLOT(Open()));
 
-    QAction *copyAct = new QAction(tr("&Save Copy"), this);
-    fileMenu->addAction(copyAct);
-    connect(copyAct,SIGNAL(triggered()),this,SLOT(SaveFileCopy()));
+    AddFileMenu();
+    AddToolsMenu();
 }
 
 MainWindow::~MainWindow()
@@ -44,7 +38,12 @@ void MainWindow::DisplayImage(const QString &fileName)
                                  tr("Cannot load %1").arg(QDir::toNativeSeparators(fileName)));
     }
 
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(ui->imageLabel->width(),
+    DisplayPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap());
+}
+
+void MainWindow::DisplayPixmap(const QPixmap &pixmap)
+{
+    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
@@ -64,11 +63,43 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     auto inputImageRect = EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().rect();
     QPainter panPainter;
-    panPainter.drawImage(inputImageRect,EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().toImage());
-    QString message {QString("MainWindow::mousePressEvent(): Mouse x: %1, Mouse y: %2").arg(e->x()).arg(e->y())};
-    EagleEye::Logger::CENTRAL_LOGGER().LogMessage(message,EagleEye::LOGLEVEL::DEBUG);
+    panPainter.drawImage(inputImageRect, EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().toImage());
     update();
 
+}
+
+void MainWindow::AddFileMenu()
+{
+    QMenu *fileMenu;
+    fileMenu = menuBar()->addMenu(tr("&File"));
+    QAction *openAct = new QAction(tr("&Open"), this);
+    fileMenu->addAction(openAct);
+    connect(openAct, SIGNAL(triggered()), this, SLOT(Open()));
+
+    QAction *copyAct = new QAction(tr("&Save Copy"), this);
+    fileMenu->addAction(copyAct);
+    connect(copyAct, SIGNAL(triggered()), this, SLOT(SaveFileCopy()));
+}
+
+void MainWindow::AddToolsMenu()
+{
+    QMenu *toolMenu;
+    toolMenu = menuBar()->addMenu(tr("&Tools"));
+
+    QMenu *DisplayFormats;
+    DisplayFormats = toolMenu->addMenu("&Display Formats");
+
+    QAction *greyScaleAction = new QAction(tr("&GreyScale"), this);
+    DisplayFormats->addAction(greyScaleAction);
+    connect(greyScaleAction, &QAction::triggered, [this](bool checked){
+      ConvertDisplayFormat(EagleEye::DisplayFormats::GreyScale);
+    });
+
+    QAction *originalAction = new QAction(tr("&Original"), this);
+    DisplayFormats->addAction(originalAction);
+    connect(originalAction, &QAction::triggered, [this](bool checked){
+      ConvertDisplayFormat(EagleEye::DisplayFormats::Original);
+    });
 }
 
 void MainWindow::Open()
@@ -93,11 +124,29 @@ void MainWindow::SaveFileCopy()
     m_ImageReadWrite->SaveImageCopy(imageCopy);
 }
 
+void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
+{
+    switch (displayFormat)
+    {
+    case EagleEye::DisplayFormats::GreyScale:
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale",
+                                                      EagleEye::LOGLEVEL::DEBUG);
+        DisplayPixmap(EagleEye::ConvertToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap()));
+        break;
+    case EagleEye::DisplayFormats::Original:
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale",
+                                                      EagleEye::LOGLEVEL::DEBUG);
+        DisplayPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap());
+        break;
+    }
+}
+
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
     float zoomFactor = static_cast<float>(value) / EagleEye::DataHandler::DATA_HANDLER().GetPreviousSliderValue();
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(static_cast<int>(ui->imageLabel->width() * zoomFactor),
-                                                        static_cast<int>(ui->imageLabel->height() * zoomFactor),
-                                                        Qt::KeepAspectRatio));
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetCurrentImagePixMap().scaled(
+                                  static_cast<int>(ui->imageLabel->width() * zoomFactor),
+                                  static_cast<int>(ui->imageLabel->height() * zoomFactor),
+                                  Qt::KeepAspectRatio));
 }

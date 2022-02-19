@@ -2,6 +2,7 @@
 #include <QObject>
 #include <QImageReader>
 #include <imagereadwrite.h>
+#include <displayformat.h>
 #include <../datahandler.h>
 class ToolsTest : public QObject
 {
@@ -12,7 +13,7 @@ public:
     ~ToolsTest();
 
 private slots:
-    void SaveFileCopy();
+    void TestSaveFileCopy();
 
 };
 
@@ -28,7 +29,7 @@ ToolsTest::~ToolsTest()
 }
 
 
-void ToolsTest::SaveFileCopy()
+void ToolsTest::TestSaveFileCopy()
 {
     EagleEye::ImageReadWrite ImageWriter;
     QPixmap imageToSave;
@@ -40,7 +41,6 @@ void ToolsTest::SaveFileCopy()
     bool success = ImageWriter.SaveImageCopy(newPixMap);
     QCOMPARE(success, true);
 }
-
 
 QTEST_MAIN(ToolsTest)
 

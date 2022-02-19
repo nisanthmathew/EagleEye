@@ -13,17 +13,21 @@ SET(LIBRARY_NAME ${PROJECT_NAME}_tools)
 
 set(${SOURCE}
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.cpp
     PARENT_SCOPE
 )
 
 SET(${HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.h
     PARENT_SCOPE
 )
 
 add_library(${LIBRARY_NAME} STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.h
     )
 
 target_link_libraries(${LIBRARY_NAME}

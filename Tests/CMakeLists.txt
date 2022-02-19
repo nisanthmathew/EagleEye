@@ -25,6 +25,7 @@ set(SRCS_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/../datahandler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/imagereadwrite.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/displayformat.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
 )
 
