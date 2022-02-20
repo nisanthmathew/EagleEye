@@ -19,7 +19,7 @@ bool ImageReadWrite::LoadImage()
     EagleEye::DataHandler::DATA_HANDLER().SetActiveFilePath(activeFileName);
     QImageReader imageReader(activeFileName);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    EagleEye::DataHandler::DATA_HANDLER().SetCurrentImagePixMap(newPixMap);
+    EagleEye::DataHandler::DATA_HANDLER().SetInputImagePixmap(newPixMap);
     return (!newPixMap.isNull());
 }
 

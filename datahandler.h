@@ -21,8 +21,8 @@ public:
         return theInstance;
     }
 
-    QPixmap GetCurrentImagePixMap() const;
-    void SetCurrentImagePixMap(const QPixmap &CurrentImagePixMap);
+    QPixmap GetOriginalImagePixmap() const;
+    void SetInputImagePixmap(const QPixmap &inputImagePixMap);
 
     int GetPreviousSliderValue() const;
     void SetPreviousSliderValue(int previousSliderValue);
@@ -30,8 +30,12 @@ public:
     QString GetActiveFilePath() const;
     void SetActiveFilePath(const QString &ActiveFilePath);
 
+    const QPixmap &GetDisplayedImagePixmap() const;
+    void SetDisplayedImagePixmap(const QPixmap &newDisplayedImagePixmap);
+
 private:
     QPixmap m_InputImagePixMap;
+    QPixmap m_DisplayedImagePixmap;
     QString m_ActiveFilePath;
     int m_PreviousSliderValue;
     QMutex *m_CommonMutex;

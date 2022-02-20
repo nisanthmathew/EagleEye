@@ -8,16 +8,16 @@
 
 namespace EagleEye{
 
-QPixmap DataHandler::GetCurrentImagePixMap() const
+QPixmap DataHandler::GetOriginalImagePixmap() const
 {
     QMutexLocker locker(m_ImageMutex);
     return m_InputImagePixMap;
 }
 
-void DataHandler::SetCurrentImagePixMap(const QPixmap &CurrentImagePixMap)
+void DataHandler::SetInputImagePixmap(const QPixmap &inputImagePixMap)
 {
     QMutexLocker locker(m_ImageMutex);
-    m_InputImagePixMap = CurrentImagePixMap;
+    m_InputImagePixMap = inputImagePixMap;
 }
 
 int DataHandler::GetPreviousSliderValue() const
@@ -42,5 +42,17 @@ void DataHandler::SetActiveFilePath(const QString &ActiveFilePath)
 {
     QMutexLocker locker(m_CommonMutex);
     m_ActiveFilePath = ActiveFilePath;
+}
+
+const QPixmap &DataHandler::GetDisplayedImagePixmap() const
+{
+    QMutexLocker locker(m_ImageMutex);
+    return m_DisplayedImagePixmap;
+}
+
+void DataHandler::SetDisplayedImagePixmap(const QPixmap &newDisplayedImagePixmap)
+{
+    QMutexLocker locker(m_ImageMutex);
+    m_DisplayedImagePixmap = newDisplayedImagePixmap;
 }
 }
