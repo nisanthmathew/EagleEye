@@ -132,7 +132,7 @@ void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
     case EagleEye::DisplayFormats::GreyScale:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale",
                                                       EagleEye::LOGLEVEL::DEBUG);
-        DisplayPixmap(EagleEye::ConvertToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
+        DisplayPixmap(EagleEye::ConvertRGBToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
         break;
     case EagleEye::DisplayFormats::Original:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale",

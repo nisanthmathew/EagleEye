@@ -11,7 +11,6 @@ enum DisplayFormats{
     Original
 };
 
-QPixmap ConvertToGreyScale(const QPixmap &image);
-
+QPixmap ConvertRGBToGreyScale(const QPixmap &image);
 }
 #endif // DISPLAYFORMAT_H
