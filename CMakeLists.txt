@@ -14,6 +14,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 SET(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
 
+find_package(ITK REQUIRED)
+IF(ITK_FOUND)
+INCLUDE(${ITK_USE_FILE})
+ELSE(ITK_FOUND)
+        MESSAGE(FATAL_ERROR "Cannot build InsightApplications without ITK.  Please set ITK_DIR.")
+ENDIF(ITK_FOUND)
+
 add_subdirectory(Tools)
 
 set(SOURCE
@@ -40,6 +47,7 @@ option(BUILD_TESTING "Enable tests" ON)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${QT_LIBRARIES}
+    ${ITK_LIBRARIES}
     ${PROJECT_NAME}_tools
     )
 

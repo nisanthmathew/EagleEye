@@ -11,12 +11,12 @@
 #include <fstream>
 
 namespace  EagleEye {
-
-enum LOGLEVEL{
-    ERROR = 0,
-    WARNING,
-    INFO,
-    DEBUG
+enum LOGLEVEL
+{
+    EE_ERROR,
+    EE_WARNING,
+    EE_INFO,
+    EE_DEBUG
 };
 
 class Logger : public QObject
@@ -51,8 +51,8 @@ public:
         static Logger theInstance;
         return theInstance;
     }
-    void LogMessage(QString message, LOGLEVEL loglevel);
+    void LogMessage(QString message, EagleEye::LOGLEVEL loglevel);
 };
 }
-
 #endif // LOGGER_H
+

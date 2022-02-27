@@ -10,8 +10,8 @@ class ImageReadWrite : public QWidget
 public:
     explicit ImageReadWrite(QWidget *parent = nullptr);
 
-    bool LoadImage();
-    bool SaveImageCopy(const QPixmap &imageToSave);
+    bool EELoadImage();
+    bool EESaveImageCopy(const QPixmap &imageToSave);
 
 };
 }

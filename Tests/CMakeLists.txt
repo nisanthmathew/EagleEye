@@ -53,6 +53,7 @@ add_executable(EagleEyeTests
 
 TARGET_LINK_LIBRARIES(EagleEyeTests
   ${QT_TEST_LIBRARIES}
+  ${ITK_LIBRARIES}
 )
 
 ADD_TEST(NAME EagleEyeTests COMMAND EagleEyeTests)

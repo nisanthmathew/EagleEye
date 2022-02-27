@@ -96,6 +96,12 @@ void MainWindow::AddToolsMenu()
       ConvertDisplayFormat(EagleEye::DisplayFormats::GreyScale);
     });
 
+    QAction *edgeDetectionAction = new QAction(tr("&Edge Detection"), this);
+    DisplayFormats->addAction(edgeDetectionAction);
+    connect(edgeDetectionAction, &QAction::triggered, [this](bool checked){
+      ConvertDisplayFormat(EagleEye::DisplayFormats::Edge);
+    });
+
     QAction *originalAction = new QAction(tr("&Original"), this);
     DisplayFormats->addAction(originalAction);
     connect(originalAction, &QAction::triggered, [this](bool checked){
@@ -105,24 +111,24 @@ void MainWindow::AddToolsMenu()
 
 void MainWindow::Open()
 {
-    if (m_ImageReadWrite->LoadImage())
+    if (m_ImageReadWrite->EELoadImage())
     {
         const QString filePath {EagleEye::DataHandler::DATA_HANDLER().GetActiveFilePath()};
         DisplayImage(filePath);
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("MainWindow::Open(): loading image %1").arg(filePath),
-                                                      EagleEye::LOGLEVEL::DEBUG);
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
     }
     else
     {
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::Open(): Failed to load image",
-                                                      EagleEye::LOGLEVEL::DEBUG);
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
     }
 }
 
 void MainWindow::SaveFileCopy()
 {
     auto imageCopy = EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap();
-    m_ImageReadWrite->SaveImageCopy(imageCopy);
+    m_ImageReadWrite->EESaveImageCopy(imageCopy);
 }
 
 void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
@@ -131,12 +137,17 @@ void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
     {
     case EagleEye::DisplayFormats::GreyScale:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale",
-                                                      EagleEye::LOGLEVEL::DEBUG);
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
         DisplayPixmap(EagleEye::ConvertRGBToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
+        break;
+    case EagleEye::DisplayFormats::Edge:
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge",
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
+        DisplayPixmap(EagleEye::ConvertRGBToEdges(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
         break;
     case EagleEye::DisplayFormats::Original:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale",
-                                                      EagleEye::LOGLEVEL::DEBUG);
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
         DisplayPixmap(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap());
         break;
     }

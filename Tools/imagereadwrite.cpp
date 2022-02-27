@@ -12,7 +12,7 @@ ImageReadWrite::ImageReadWrite(QWidget *parent) : QWidget(nullptr)
 
 }
 
-bool ImageReadWrite::LoadImage()
+bool ImageReadWrite::EELoadImage()
 {
     QString activeFileName = QFileDialog::getOpenFileName(this,
                                                          tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
@@ -23,7 +23,7 @@ bool ImageReadWrite::LoadImage()
     return (!newPixMap.isNull());
 }
 
-bool ImageReadWrite::SaveImageCopy(const QPixmap &imageToSave)
+bool ImageReadWrite::EESaveImageCopy(const QPixmap &imageToSave)
 {
     if (imageToSave.isNull())
     {

@@ -41,6 +41,5 @@ private:
     QMutex *m_CommonMutex;
     QMutex *m_ImageMutex;
 };
-
-#endif // DATAHANDLER_H
 }
+#endif // DATAHANDLER_H
