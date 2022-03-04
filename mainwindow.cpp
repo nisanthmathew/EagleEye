@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
 
     AddFileMenu();
     AddToolsMenu();
+    AddDisplayFormats();
 }
 
 MainWindow::~MainWindow()
@@ -86,9 +87,12 @@ void MainWindow::AddToolsMenu()
 {
     QMenu *toolMenu;
     toolMenu = menuBar()->addMenu(tr("&Tools"));
+}
 
+void MainWindow::AddDisplayFormats()
+{
     QMenu *DisplayFormats;
-    DisplayFormats = toolMenu->addMenu("&Display Formats");
+    DisplayFormats = menuBar()->addMenu("&Display Formats");
 
     QAction *greyScaleAction = new QAction(tr("&GreyScale"), this);
     DisplayFormats->addAction(greyScaleAction);

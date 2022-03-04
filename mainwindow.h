@@ -41,8 +41,9 @@ private slots:
     void on_horizontalSlider_valueChanged(int value);
 
 private:
-    void AddToolsMenu();
     void AddFileMenu();
+    void AddToolsMenu();
+    void AddDisplayFormats();
 
     Ui::MainWindow *ui;
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
