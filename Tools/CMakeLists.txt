@@ -11,27 +11,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 SET(LIBRARY_NAME ${PROJECT_NAME}_tools)
 
-set(${SOURCE}
+set(SOURCE
+    ${SOURCE}
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.cpp
-    PARENT_SCOPE
+    ${CMAKE_CURRENT_SOURCE_DIR}/imageprocessingutilities.cpp
 )
 
-SET(${HEADERS}
+SET(HEADERS
+    ${HEADERS}
     ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
     ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.h
     ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.h
-    PARENT_SCOPE
+    ${CMAKE_CURRENT_SOURCE_DIR}/imageprocessingutilities.h
 )
 
 add_library(${LIBRARY_NAME} STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwrite.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.h
+    ${SOURCE}
+    ${HEADERS}
     )
 
 target_link_libraries(${LIBRARY_NAME}

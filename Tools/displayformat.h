@@ -1,12 +1,9 @@
 #ifndef DISPLAYFORMAT_H
 #define DISPLAYFORMAT_H
 
-#include <QPixmap>
+#include "imageprocessingutilities.h"
 
-#include <itkImage.h>
-#include <itkImageFileReader.h>
-#include <itkImageFileWriter.h>
-#include <itkSobelEdgeDetectionImageFilter.h>
+#include <QPixmap>
 
 namespace EagleEye
 {
@@ -20,7 +17,5 @@ enum DisplayFormats
 
 QPixmap ConvertRGBToGreyScale(const QPixmap &image);
 QPixmap ConvertRGBToEdges(const QPixmap &image);
-
-QPixmap EdgeDetection(const QPixmap &image);
 };
 #endif // DISPLAYFORMAT_H
