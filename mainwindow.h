@@ -11,6 +11,7 @@
 #include <QImageReader>
 #include <QAction>
 #include <QResizeEvent>
+#include <QRubberBand>
 
 #include <memory>
 
@@ -30,7 +31,8 @@ public:
     void DisplayPixmap(const QPixmap &pixmap);
     void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
-    void mouseDragEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
 
 public slots:
     void Open();
@@ -46,6 +48,9 @@ private:
     void AddDisplayFormats();
 
     Ui::MainWindow *ui;
+    QRubberBand *m_Rubberband;
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
+    QPoint m_MouseStartPoint;
+    QPoint m_MouseEndPoint;
 };
 #endif // MAINWINDOW_H

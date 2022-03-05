@@ -55,4 +55,14 @@ void DataHandler::SetDisplayedImagePixmap(const QPixmap &newDisplayedImagePixmap
     QMutexLocker locker(m_ImageMutex);
     m_DisplayedImagePixmap = newDisplayedImagePixmap;
 }
+
+const bool DataHandler::GetSelectROI() const
+{
+    return m_SelectROI;
+}
+
+void DataHandler::SetSelectROI(const bool selectROI)
+{
+    m_SelectROI = selectROI;
+}
 }

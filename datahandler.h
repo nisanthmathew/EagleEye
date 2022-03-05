@@ -11,7 +11,10 @@ class DataHandler
 {
 private:
     DataHandler():
-        m_PreviousSliderValue(100)
+        m_ImageMutex(nullptr),
+        m_CommonMutex(nullptr),
+        m_PreviousSliderValue(100),
+        m_SelectROI(false)
     {
 
     }
@@ -33,13 +36,17 @@ public:
     const QPixmap &GetDisplayedImagePixmap() const;
     void SetDisplayedImagePixmap(const QPixmap &newDisplayedImagePixmap);
 
+    const bool GetSelectROI() const;
+    void SetSelectROI(const bool selectROI);
+
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
     QString m_ActiveFilePath;
-    int m_PreviousSliderValue;
-    QMutex *m_CommonMutex;
     QMutex *m_ImageMutex;
+    QMutex *m_CommonMutex;
+    int m_PreviousSliderValue;
+    bool m_SelectROI;
 };
 }
 #endif // DATAHANDLER_H

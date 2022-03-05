@@ -10,7 +10,8 @@
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_Rubberband(nullptr)
 {
     ui->setupUi(this);
     setMinimumSize(1, 1);
@@ -18,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->horizontalSlider->setRange(100,400);
     ui->horizontalSlider->setTickInterval(1);
     ui->horizontalSlider->hide();
-
     m_ImageReadWrite = std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite());
 
     AddFileMenu();
@@ -45,9 +45,8 @@ void MainWindow::DisplayImage(const QString &fileName)
 void MainWindow::DisplayPixmap(const QPixmap &pixmap)
 {
     EagleEye::DataHandler::DATA_HANDLER().SetDisplayedImagePixmap(pixmap);
-    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(),
-                                                        ui->imageLabel->height(),
-                                                        Qt::KeepAspectRatio));
+    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(), ui->imageLabel->height(),
+                                            Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     ui->horizontalSlider->show();
 }
@@ -58,17 +57,42 @@ void MainWindow::resizeEvent(QResizeEvent *e)
     ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap().scaled(ui->imageLabel->width(),
                                                         ui->imageLabel->height(),
                                                         Qt::KeepAspectRatio));
-
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    auto inputImageRect = ui->imageLabel->pixmap(Qt::ReturnByValue).rect();
-    QPainter panPainter;
-    panPainter.drawImage(inputImageRect, ui->imageLabel->pixmap(Qt::ReturnByValue).toImage());
-    update();
-
+    if (EagleEye::DataHandler::DATA_HANDLER().GetSelectROI())
+    {
+        m_MouseStartPoint = e->pos();
+        if (!m_Rubberband)
+            m_Rubberband = new QRubberBand(QRubberBand::Rectangle, this);
+        m_Rubberband->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
+        m_Rubberband->show();
+    }
 }
+
+void MainWindow::mouseMoveEvent(QMouseEvent *e)
+{
+    if (EagleEye::DataHandler::DATA_HANDLER().GetSelectROI() && m_Rubberband)
+    {
+        m_Rubberband->setGeometry(QRect(m_MouseStartPoint, e->pos()).normalized());
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    if (EagleEye::DataHandler::DATA_HANDLER().GetSelectROI() && m_Rubberband)
+    {
+        QPixmap displayedPixmap = ui->imageLabel->pixmap(Qt::ReturnByValue);
+        auto mappedStartPoint = ui->imageLabel->mapFrom(this, m_MouseStartPoint);
+        auto x = mappedStartPoint.x() - int((ui->imageLabel->width() - displayedPixmap.width()) / 2);
+        auto y = mappedStartPoint.y() - int((ui->imageLabel->height() - displayedPixmap.height()) / 2);
+        auto croppedImage = displayedPixmap.copy(x, y, m_Rubberband->geometry().width(), m_Rubberband->geometry().height());
+        DisplayPixmap(croppedImage);
+        m_Rubberband->hide();
+    }
+}
+
 
 void MainWindow::AddFileMenu()
 {
@@ -87,6 +111,13 @@ void MainWindow::AddToolsMenu()
 {
     QMenu *toolMenu;
     toolMenu = menuBar()->addMenu(tr("&Tools"));
+    QAction *selectROI = new QAction(tr("&Select ROI"), this);
+    toolMenu->addAction(selectROI);
+    selectROI->setCheckable(true);
+    connect(selectROI, &QAction::toggled, [this, &selectROI](bool checked)
+    {
+        EagleEye::DataHandler::DATA_HANDLER().SetSelectROI(checked);
+    });
 }
 
 void MainWindow::AddDisplayFormats()
@@ -96,19 +127,22 @@ void MainWindow::AddDisplayFormats()
 
     QAction *greyScaleAction = new QAction(tr("&GreyScale"), this);
     DisplayFormats->addAction(greyScaleAction);
-    connect(greyScaleAction, &QAction::triggered, [this](bool checked){
+    connect(greyScaleAction, &QAction::triggered, [this](bool checked)
+    {
       ConvertDisplayFormat(EagleEye::DisplayFormats::GreyScale);
     });
 
     QAction *edgeDetectionAction = new QAction(tr("&Edge Detection"), this);
     DisplayFormats->addAction(edgeDetectionAction);
-    connect(edgeDetectionAction, &QAction::triggered, [this](bool checked){
+    connect(edgeDetectionAction, &QAction::triggered, [this](bool checked)
+    {
       ConvertDisplayFormat(EagleEye::DisplayFormats::Edge);
     });
 
     QAction *originalAction = new QAction(tr("&Original"), this);
     DisplayFormats->addAction(originalAction);
-    connect(originalAction, &QAction::triggered, [this](bool checked){
+    connect(originalAction, &QAction::triggered, [this](bool checked)
+    {
       ConvertDisplayFormat(EagleEye::DisplayFormats::Original);
     });
 }
@@ -142,12 +176,12 @@ void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
     case EagleEye::DisplayFormats::GreyScale:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        DisplayPixmap(EagleEye::ConvertRGBToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
+        DisplayPixmap(EagleEye::ConvertRGBToGreyScale(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap()));
         break;
     case EagleEye::DisplayFormats::Edge:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        DisplayPixmap(EagleEye::ConvertRGBToEdges(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap()));
+        DisplayPixmap(EagleEye::ConvertRGBToEdges(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap()));
         break;
     case EagleEye::DisplayFormats::Original:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale",
