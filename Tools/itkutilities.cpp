@@ -3,22 +3,21 @@
 namespace EagleEye
 {
 
-EEImageType::Pointer ITKImageFromPixmap(const QPixmap &qPixmap)
+EERGBImageType::Pointer ITKImageFromPixmap(const QPixmap &qPixmap)
 {
     QImage qImage = qPixmap.toImage();
 
-    EEImageType::Pointer image = EEImageType::New();
-    EEImageType::IndexType start;
+    EERGBImageType::Pointer image = EERGBImageType::New();
+    EERGBImageType::IndexType start;
 
     start[0] = 0; // first index on X
     start[1] = 0; // first index on Y
 
-    EEImageType::SizeType size;
+    EERGBImageType::SizeType size;
     size[0] = qImage.width(); // size along X
     size[1] = qImage.height(); // size along Y
 
-    std::cout << "input " << size[0] << " " << size[1] << std::endl;
-    EEImageType::RegionType region;
+    EERGBImageType::RegionType region;
     region.SetSize(size);
     region.SetIndex(start);
 
@@ -26,15 +25,15 @@ EEImageType::Pointer ITKImageFromPixmap(const QPixmap &qPixmap)
     image->Allocate();
     image->Update();
 
-    EEImageType::IndexType index;
-    EEImageType::PixelType pixel;
+    EERGBImageType::IndexType index;
+    EERGBImageType::PixelType pixel;
 
     for (int row = 0; row < qImage.height(); row++)
     {
         QRgb *rowData = (QRgb*)qImage.scanLine(row);
         for (int col = 0; col < qImage.width(); col++)
         {
-            pixel = qRed(rowData[col]);
+            pixel.Set(qRed(rowData[col]), qGreen(rowData[col]), qBlue(rowData[col]));
             index[0] = col;
             index[1] = row;
             image->SetPixel(index, pixel);
@@ -44,14 +43,14 @@ EEImageType::Pointer ITKImageFromPixmap(const QPixmap &qPixmap)
     return image;
 }
 
-QPixmap PixmapFromITKImage(const EEImageType::Pointer itkImage)
+QImage QImageFromITKImage(const EERGBImageType::Pointer itkImage)
 {
     auto width = itkImage->GetLargestPossibleRegion().GetSize()[0];
     auto height = itkImage->GetLargestPossibleRegion().GetSize()[1];
 
     QImage qImage (QSize(width, height), QImage::Format_RGB32);
-    EEImageType::IndexType index;
-    EEImageType::PixelType pixel;
+    EERGBImageType::IndexType index;
+    EERGBImageType::PixelType pixel;
 
     for (int row = 0; row < height; row++)
     {
@@ -60,10 +59,12 @@ QPixmap PixmapFromITKImage(const EEImageType::Pointer itkImage)
         {
             index[0] = col;
             index[1] = row;
-            auto pixelValue = itkImage->GetPixel(index);
-            rowData[col] = qRgb(pixelValue, pixelValue, pixelValue);
+            auto pixelValueR = itkImage->GetPixel(index)[0];
+            auto pixelValueG = itkImage->GetPixel(index)[1];
+            auto pixelValueB = itkImage->GetPixel(index)[2];
+            rowData[col] = qRgb(pixelValueR, pixelValueG, pixelValueB);
         }
     }
-    return QPixmap::fromImage(qImage);
+    return qImage;
 }
 }
