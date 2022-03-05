@@ -1,7 +1,7 @@
 #ifndef ITKUTILITIES_H
 #define ITKUTILITIES_H
 
-#include <QPixmap>
+#include <QImage>
 
 #include <itkImage.h>
 #include <itkRGBPixel.h>
@@ -10,12 +10,15 @@
 namespace EagleEye
 {
 
-using EERGBPixelType = itk::RGBPixel<unsigned char>;
-using EERGBImageType = itk::Image<EERGBPixelType, 2>;
 
 using EEPixelType = float;
 using EEImageType = itk::Image<EEPixelType, 2>;
-EERGBImageType::Pointer ITKImageFromPixmap(const QPixmap &qPixmap);
-QImage QImageFromITKImage(const EERGBImageType::Pointer itkImage);
+using EERGBPixelType = itk::RGBPixel<float>;
+using EERGBImageType = itk::Image<EERGBPixelType, 2>;
+EERGBImageType::Pointer EERGBITKImageFromQImage(const QImage &qImage);
+EEImageType::Pointer EEGrayITKImageFromQImage(const QImage &qImage);
+
+QImage EERGBQImageFromITKImage(const EERGBImageType::Pointer itkImage);
+QImage EEGrayQImageFromITKImage(const EEImageType::Pointer itkImage);
 };
 #endif // ITKUTILITIES_H

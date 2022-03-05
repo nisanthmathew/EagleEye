@@ -12,6 +12,7 @@
 
 namespace EagleEye
 {
+
 QPixmap EEEdgeDetection(const QPixmap &image);
 
 };

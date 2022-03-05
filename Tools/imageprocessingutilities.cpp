@@ -5,14 +5,17 @@ namespace EagleEye
 
 QPixmap EEEdgeDetection(const QPixmap &image)
 {
-    auto itkimage = ITKImageFromPixmap(image);
 
-    using FilterType = itk::SobelEdgeDetectionImageFilter<EEImageType, EEImageType>;
-    FilterType::Pointer filter = FilterType::New();
-    filter->SetInput(itkimage);
-    filter->Update();
-    auto itkImage = filter->GetOutput();
-    return PixmapFromITKImage(itkImage);
+    auto itkGreyImage = EEGrayITKImageFromQImage(image.toImage());
+
+    using SobelFilterType = itk::SobelEdgeDetectionImageFilter<EEImageType, EEImageType>;
+    SobelFilterType::Pointer sobelFilter = SobelFilterType::New();
+    sobelFilter->SetInput(itkGreyImage);
+    sobelFilter->Update();
+
+    auto edgeImage = EEGrayQImageFromITKImage(sobelFilter->GetOutput());
+    edgeImage.invertPixels(QImage::InvertRgb);
+    return QPixmap::fromImage(edgeImage);
 }
 
 }
