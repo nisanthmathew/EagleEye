@@ -52,8 +52,8 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 {
     Q_UNUSED(e);
     ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap().scaled(ui->imageLabel->width(),
-                                                        ui->imageLabel->height(),
-                                                        Qt::KeepAspectRatio));
+                                                                                                     ui->imageLabel->height(),
+                                                                                                     Qt::KeepAspectRatio));
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
@@ -61,7 +61,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     m_MouseStartPoint = e->pos();
     if (EagleEye::DataHandler::DATA_HANDLER().GetSelectROI())
     {
-        if (!m_Rubberband)          
+        if (!m_Rubberband)
             m_Rubberband = std::unique_ptr<QRubberBand>(new QRubberBand(QRubberBand::Rectangle));
 
         m_Rubberband->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
@@ -142,21 +142,21 @@ void MainWindow::AddDisplayFormats()
     DisplayFormats->addAction(greyScaleAction);
     connect(greyScaleAction, &QAction::triggered, [this](bool checked)
     {
-      ConvertDisplayFormat(EagleEye::DisplayFormats::GreyScale);
+        ConvertDisplayFormat(EagleEye::DisplayFormats::GreyScale);
     });
 
     QAction *edgeDetectionAction = new QAction(tr("&Edge Detection"), this);
     DisplayFormats->addAction(edgeDetectionAction);
     connect(edgeDetectionAction, &QAction::triggered, [this](bool checked)
     {
-      ConvertDisplayFormat(EagleEye::DisplayFormats::Edge);
+        ConvertDisplayFormat(EagleEye::DisplayFormats::Edge);
     });
 
     QAction *originalAction = new QAction(tr("&Original"), this);
     DisplayFormats->addAction(originalAction);
     connect(originalAction, &QAction::triggered, [this](bool checked)
     {
-      ConvertDisplayFormat(EagleEye::DisplayFormats::Original);
+        ConvertDisplayFormat(EagleEye::DisplayFormats::Original);
     });
 }
 
