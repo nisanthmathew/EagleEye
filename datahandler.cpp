@@ -20,18 +20,6 @@ void DataHandler::SetInputImagePixmap(const QPixmap &inputImagePixMap)
     m_InputImagePixMap = inputImagePixMap;
 }
 
-int DataHandler::GetPreviousSliderValue() const
-{
-    QMutexLocker locker(m_CommonMutex);
-    return m_PreviousSliderValue;
-}
-
-void DataHandler::SetPreviousSliderValue(int previousSliderValue)
-{
-    QMutexLocker locker(m_CommonMutex);
-    m_PreviousSliderValue = previousSliderValue;
-}
-
 QString DataHandler::GetActiveFilePath() const
 {
     QMutexLocker locker(m_CommonMutex);
@@ -64,5 +52,15 @@ const bool DataHandler::GetSelectROI() const
 void DataHandler::SetSelectROI(const bool selectROI)
 {
     m_SelectROI = selectROI;
+}
+
+float DataHandler::GetZoomFactor() const
+{
+    return m_ZoomFactor;
+}
+
+void DataHandler::SetZoomFactor(float newZoomFactor)
+{
+    m_ZoomFactor = newZoomFactor;
 }
 }

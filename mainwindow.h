@@ -33,14 +33,12 @@ public:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *e) override;
 
 public slots:
     void Open();
     void SaveFileCopy();
     void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
-
-private slots:
-    void on_horizontalSlider_valueChanged(int value);
 
 private:
     void AddFileMenu();
@@ -48,7 +46,7 @@ private:
     void AddDisplayFormats();
 
     Ui::MainWindow *ui;
-    QRubberBand *m_Rubberband;
+    std::unique_ptr<QRubberBand> m_Rubberband;
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
     QPoint m_MouseStartPoint;
     QPoint m_MouseEndPoint;

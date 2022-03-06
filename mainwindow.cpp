@@ -9,6 +9,7 @@
 #include <iostream>
 
 
+
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_Rubberband(nullptr)
@@ -16,9 +17,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui->setupUi(this);
     setMinimumSize(1, 1);
     setWindowTitle("EagleEye");
-    ui->horizontalSlider->setRange(100,400);
-    ui->horizontalSlider->setTickInterval(1);
-    ui->horizontalSlider->hide();
     m_ImageReadWrite = std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite());
 
     AddFileMenu();
@@ -48,7 +46,6 @@ void MainWindow::DisplayPixmap(const QPixmap &pixmap)
     ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(), ui->imageLabel->height(),
                                             Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
-    ui->horizontalSlider->show();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)
@@ -61,11 +58,12 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
+    m_MouseStartPoint = e->pos();
     if (EagleEye::DataHandler::DATA_HANDLER().GetSelectROI())
     {
-        m_MouseStartPoint = e->pos();
-        if (!m_Rubberband)
-            m_Rubberband = new QRubberBand(QRubberBand::Rectangle, this);
+        if (!m_Rubberband)          
+            m_Rubberband = std::unique_ptr<QRubberBand>(new QRubberBand(QRubberBand::Rectangle));
+
         m_Rubberband->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
         m_Rubberband->show();
     }
@@ -91,6 +89,21 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         DisplayPixmap(croppedImage);
         m_Rubberband->hide();
     }
+}
+
+void MainWindow::wheelEvent(QWheelEvent *e)
+{
+    int zoomDir = e->angleDelta().y() / std::abs(e->angleDelta().y());
+    float zoomFactor = EagleEye::DataHandler::DATA_HANDLER().GetZoomFactor() + (zoomDir * 0.1);
+
+    if (zoomFactor >= 5.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
+        return;
+
+    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap().scaled(
+                                  static_cast<int>(ui->imageLabel->width() * zoomFactor),
+                                  static_cast<int>(ui->imageLabel->height() * zoomFactor),
+                                  Qt::KeepAspectRatio));
+    EagleEye::DataHandler::DATA_HANDLER().SetZoomFactor(zoomFactor);
 }
 
 
@@ -189,14 +202,4 @@ void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
         DisplayPixmap(EagleEye::DataHandler::DATA_HANDLER().GetOriginalImagePixmap());
         break;
     }
-}
-
-
-void MainWindow::on_horizontalSlider_valueChanged(int value)
-{
-    float zoomFactor = static_cast<float>(value) / EagleEye::DataHandler::DATA_HANDLER().GetPreviousSliderValue();
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::DATA_HANDLER().GetDisplayedImagePixmap().scaled(
-                                  static_cast<int>(ui->imageLabel->width() * zoomFactor),
-                                  static_cast<int>(ui->imageLabel->height() * zoomFactor),
-                                  Qt::KeepAspectRatio));
 }

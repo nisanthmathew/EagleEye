@@ -13,7 +13,7 @@ private:
     DataHandler():
         m_ImageMutex(nullptr),
         m_CommonMutex(nullptr),
-        m_PreviousSliderValue(100),
+        m_ZoomFactor(1.0f),
         m_SelectROI(false)
     {
 
@@ -27,9 +27,6 @@ public:
     QPixmap GetOriginalImagePixmap() const;
     void SetInputImagePixmap(const QPixmap &inputImagePixMap);
 
-    int GetPreviousSliderValue() const;
-    void SetPreviousSliderValue(int previousSliderValue);
-
     QString GetActiveFilePath() const;
     void SetActiveFilePath(const QString &ActiveFilePath);
 
@@ -39,13 +36,16 @@ public:
     const bool GetSelectROI() const;
     void SetSelectROI(const bool selectROI);
 
+    float GetZoomFactor() const;
+    void SetZoomFactor(float newZoomFactor);
+
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
     QString m_ActiveFilePath;
     QMutex *m_ImageMutex;
     QMutex *m_CommonMutex;
-    int m_PreviousSliderValue;
+    float m_ZoomFactor;
     bool m_SelectROI;
 };
 }
