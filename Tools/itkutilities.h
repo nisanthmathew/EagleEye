@@ -54,6 +54,10 @@ typename T::Pointer EEITKImageFromQImage(const QImage &qImage)
         rgbImage->Update();
     }
 
+    itk::Image<itk::RGBPixel<float>, 2>::PixelType rgbPixel;
+    itk::Image<itk::RGBPixel<float>, 2>::IndexType rgbIndex;
+    typename T::PixelType tPixel;
+    typename itk::Image<T, 2>::IndexType tIndex;
 
     for (int row = 0; row < qImage.height(); row++)
     {
@@ -62,23 +66,18 @@ typename T::Pointer EEITKImageFromQImage(const QImage &qImage)
         {
             if (isRGBPixelType)
             {
-                itk::Image<itk::RGBPixel<float>, 2>::PixelType pixel;
-                itk::Image<itk::RGBPixel<float>, 2>::IndexType index;
-                index[0] = col;
-                index[1] = row;
-                pixel.Set(qRed(rowData[col]), qGreen(rowData[col]), qBlue(rowData[col]));
-                rgbImage->SetPixel(index, pixel);
+                rgbIndex[0] = col;
+                rgbIndex[1] = row;
+                rgbPixel.Set(qRed(rowData[col]), qGreen(rowData[col]), qBlue(rowData[col]));
+                rgbImage->SetPixel(rgbIndex, rgbPixel);
             }
             else
             {
-                typename T::PixelType pixel;
-                typename itk::Image<T, 2>::IndexType index;
-                index[0] = col;
-                index[1] = row;
-                pixel = (qRed(rowData[col]) + qGreen(rowData[col]) + qBlue(rowData[col])) / 3;
-                image->SetPixel(index, pixel);
+                tIndex[0] = col;
+                tIndex[1] = row;
+                tPixel = (qRed(rowData[col]) + qGreen(rowData[col]) + qBlue(rowData[col])) / 3;
+                image->SetPixel(tIndex, tPixel);
             }
-
         }
     }
 
