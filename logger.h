@@ -28,13 +28,13 @@ private:
         QString filename {QDate::currentDate().toString(Qt::ISODate) + ".txt"};
         QFile logFile{filename};
         QTimer *timer = new QTimer(this);
-        QObject::connect(timer, &QTimer::timeout, [this, filename](){
+        QObject::connect(timer, &QTimer::timeout, this, [this, filename](){
             QMutexLocker locker (m_LogMutex);
             if (m_LogVector.empty())
                 return;
             std::ofstream logFileStream;
             logFileStream.open(filename.toStdString(), std::fstream::app);
-            for (auto message : m_LogVector)
+            for (const auto &message : m_LogVector)
             {
                 logFileStream << message << std::endl;
             }
