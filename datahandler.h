@@ -24,6 +24,9 @@ public:
         return theInstance;
     }
 
+    DataHandler (const DataHandler &) = delete;
+    DataHandler& operator=(const DataHandler &) = delete;
+
     QPixmap GetOriginalImagePixmap() const;
     void SetInputImagePixmap(const QPixmap &inputImagePixMap);
 

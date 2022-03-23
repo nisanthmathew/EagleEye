@@ -51,6 +51,8 @@ public:
         static Logger theInstance;
         return theInstance;
     }
+    Logger (const Logger &) = delete;
+    Logger& operator=(const Logger &) = delete;
     void LogMessage(QString message, EagleEye::LOGLEVEL loglevel);
 };
 }
