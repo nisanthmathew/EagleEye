@@ -1,6 +1,6 @@
 #include "displayformat.h"
 #include <../datahandler.h>
-#include <QDebug>
+
 
 namespace EagleEye
 {

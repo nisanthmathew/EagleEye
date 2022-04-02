@@ -11,15 +11,15 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
-SET(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
-
 find_package(ITK REQUIRED)
 IF(ITK_FOUND)
 INCLUDE(${ITK_USE_FILE})
 ELSE(ITK_FOUND)
         MESSAGE(FATAL_ERROR "Cannot build InsightApplications without ITK.  Please set ITK_DIR.")
 ENDIF(ITK_FOUND)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+SET(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
 
 add_subdirectory(Tools)
 
