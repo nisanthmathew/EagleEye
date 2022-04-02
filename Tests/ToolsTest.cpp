@@ -33,12 +33,12 @@ void ToolsTest::TestSaveFileCopy()
 {
     EagleEye::ImageReadWrite ImageWriter;
     QPixmap imageToSave;
-    QCOMPARE(ImageWriter.SaveImageCopy(imageToSave), false);
-    ImageWriter.LoadImage();
+    QCOMPARE(ImageWriter.EESaveImageCopy(imageToSave), false);
+    ImageWriter.EELoadImage();
 
-    QImageReader imageReader(EagleEye::DataHandler::DATA_HANDLER().GetActiveFilePath());
+    QImageReader imageReader(EagleEye::DataHandler::SINGLE_INSTANCE().GetActiveFilePath());
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    bool success = ImageWriter.SaveImageCopy(newPixMap);
+    bool success = ImageWriter.EESaveImageCopy(newPixMap);
     QCOMPARE(success, true);
 }
 
