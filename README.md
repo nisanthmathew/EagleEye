@@ -7,6 +7,6 @@ The project is aimed at creating an open source image editor and analysis softwa
 **Features:**
 1) Apply filters to the ROI.
 
-    <img src=https://github.com/nisanthmathew/EagleEye/blob/master/SampleImages/FiltersOnROI.png width="500" height="400" />
+    <img src=https://github.com/nisanthmathew/EagleEye/blob/master/SampleImages/FiltersOnROI.png width="640" height="480" />
     
 2) Save modified images.
