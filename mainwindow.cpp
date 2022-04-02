@@ -10,7 +10,6 @@
 
 #include <iostream>
 
-
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_Rubberband(nullptr)
@@ -43,6 +42,8 @@ void MainWindow::DisplayImage(const QString &fileName)
 
 void MainWindow::DisplayPixmap(const QPixmap &pixmap)
 {
+    EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::DisplayPixmap(): Setting and displaying pixmap.",
+                                                  EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::DataHandler::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
     ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(), ui->imageLabel->height(),
                                             Qt::KeepAspectRatio));
@@ -84,18 +85,22 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
     {
         const auto rubberbandGeometry = m_Rubberband->geometry();
-        EagleEye::DataHandler::SINGLE_INSTANCE().SetRegionOfinterset({rubberbandGeometry.topLeft(),
-                                                                      rubberbandGeometry.topRight(),
-                                                                      rubberbandGeometry.bottomRight(),
-                                                                      rubberbandGeometry.bottomLeft()});
         QPixmap displayedPixmap = ui->imageLabel->pixmap(Qt::ReturnByValue);
-//        auto croppedImage = displayedPixmap.copy(m_Rubberband->geometry());
-//        DisplayPixmap(croppedImage);
+        const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
+        const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
+        QRect ROI (topLeft, bottomRight);
+        EagleEye::DataHandler::SINGLE_INSTANCE().SetRegionOfinterset(ROI);
+        EagleEye::DataHandler::SINGLE_INSTANCE().SetROIPixmap(displayedPixmap.copy(ROI));
     }
 }
 
 void MainWindow::wheelEvent(QWheelEvent *e)
 {
+    if (m_Rubberband)
+    {
+        m_Rubberband->hide();
+    }
+
     int zoomDir = e->angleDelta().y() / std::abs(e->angleDelta().y());
     float zoomFactor = EagleEye::DataHandler::SINGLE_INSTANCE().GetZoomFactor() + (zoomDir * 0.1);
 
@@ -133,6 +138,13 @@ void MainWindow::AddToolsMenu()
     connect(selectROI, &QAction::toggled, [this, &selectROI](bool checked)
     {
         EagleEye::DataHandler::SINGLE_INSTANCE().SetSelectROI(checked);
+
+        if (!checked) //clear everything is unchecked
+        {
+            EagleEye::DataHandler::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
+            EagleEye::DataHandler::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
+        }
+
     });
 }
 
@@ -187,22 +199,45 @@ void MainWindow::SaveFileCopy()
 
 void MainWindow::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
 {
+    if (m_Rubberband)
+    {
+        m_Rubberband->hide();
+    }
+
+    auto pixmapToBeProcessed = EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap();
+    if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI()) // use ROI option select the use the ROI image
+    {
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): ROI is valid, hence using it.",
+                                                      EagleEye::LOGLEVEL::EE_DEBUG);
+        pixmapToBeProcessed = EagleEye::DataHandler::SINGLE_INSTANCE().GetROIPixmap();
+    }
+
     switch (displayFormat)
     {
     case EagleEye::DisplayFormats::GreyScale:
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale",
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Greyscale.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        DisplayPixmap(EagleEye::ConvertRGBToGreyScale(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap()));
+        DisplayPixmap(EagleEye::CombineROIAndDisplayedPixmap(
+                          EagleEye::ConvertRGBToGreyScale(pixmapToBeProcessed), ui->imageLabel->pixmap(Qt::ReturnByValue)));
         break;
     case EagleEye::DisplayFormats::Edge:
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge",
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        DisplayPixmap(EagleEye::ConvertRGBToEdges(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap()));
+        DisplayPixmap(EagleEye::CombineROIAndDisplayedPixmap(
+                          EagleEye::ConvertRGBToEdges(pixmapToBeProcessed), ui->imageLabel->pixmap(Qt::ReturnByValue)));
         break;
     case EagleEye::DisplayFormats::Original:
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale",
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Reverting to Greyscale.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
         DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetOriginalImagePixmap());
         break;
     }
+}
+
+QPoint MainWindow::MapPointToPixmap(QPoint point, QPixmap *pixmap)
+{
+    auto mappedPoint = ui->imageLabel->mapFrom(this, point);
+    mappedPoint.setX(point.x() - int((ui->imageLabel->width() - pixmap->width()) / 2));
+    mappedPoint.setY(point.y() - int((ui->imageLabel->height() - pixmap->height()) / 2));
+    return mappedPoint;
 }

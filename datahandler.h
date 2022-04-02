@@ -42,13 +42,17 @@ public:
     float GetZoomFactor() const;
     void SetZoomFactor(float newZoomFactor);
 
-    const QVector<QPoint> &GetRegionOfinterset() const;
-    void SetRegionOfinterset(const QVector<QPoint> &newRegionOfinterset);
+    const QRect &GetRegionOfinterset() const;
+    void SetRegionOfinterset(const QRect &newRegionOfinterset);
+
+    const QPixmap &GetROIPixmap() const;
+    void SetROIPixmap(const QPixmap &newROIPixmap);
 
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
-    QVector<QPoint> m_RegionOfinterset;
+    QPixmap m_ROIPixmap;
+    QRect m_RegionOfinterset;
     QString m_ActiveFilePath;
     QMutex *m_ImageMutex;
     QMutex *m_CommonMutex;

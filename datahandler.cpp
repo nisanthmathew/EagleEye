@@ -64,14 +64,24 @@ void DataHandler::SetZoomFactor(float newZoomFactor)
     m_ZoomFactor = newZoomFactor;
 }
 
-const QVector<QPoint> &DataHandler::GetRegionOfinterset() const
+const QRect &DataHandler::GetRegionOfinterset() const
 {
     return m_RegionOfinterset;
 }
 
-void DataHandler::SetRegionOfinterset(const QVector<QPoint> &newRegionOfinterset)
+void DataHandler::SetRegionOfinterset(const QRect &newRegionOfinterset)
 {
     m_RegionOfinterset = newRegionOfinterset;
+}
+
+const QPixmap &DataHandler::GetROIPixmap() const
+{
+    return m_ROIPixmap;
+}
+
+void DataHandler::SetROIPixmap(const QPixmap &newROIPixmap)
+{
+    m_ROIPixmap = newROIPixmap;
 }
 
 }

@@ -17,5 +17,6 @@ enum DisplayFormats
 
 QPixmap ConvertRGBToGreyScale(const QPixmap &image);
 QPixmap ConvertRGBToEdges(const QPixmap &image);
+QPixmap CombineROIAndDisplayedPixmap(const QPixmap &roiPixmap, const QPixmap &displayedPixmap);
 };
 #endif // DISPLAYFORMAT_H

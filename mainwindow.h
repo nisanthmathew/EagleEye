@@ -43,6 +43,7 @@ private:
     void AddFileMenu();
     void AddToolsMenu();
     void AddDisplayFormats();
+    QPoint MapPointToPixmap(QPoint point, QPixmap *pixmap);
 
     Ui::MainWindow *ui;
     std::unique_ptr<EEROIQRubberBand> m_Rubberband;
