@@ -63,4 +63,15 @@ void DataHandler::SetZoomFactor(float newZoomFactor)
 {
     m_ZoomFactor = newZoomFactor;
 }
+
+const QVector<QPoint> &DataHandler::GetRegionOfinterset() const
+{
+    return m_RegionOfinterset;
+}
+
+void DataHandler::SetRegionOfinterset(const QVector<QPoint> &newRegionOfinterset)
+{
+    m_RegionOfinterset = newRegionOfinterset;
+}
+
 }

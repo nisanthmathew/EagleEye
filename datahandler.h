@@ -19,7 +19,7 @@ private:
 
     }
 public:
-    static DataHandler& DATA_HANDLER(){
+    static DataHandler& SINGLE_INSTANCE(){
         static DataHandler theInstance;
         return theInstance;
     }
@@ -42,9 +42,13 @@ public:
     float GetZoomFactor() const;
     void SetZoomFactor(float newZoomFactor);
 
+    const QVector<QPoint> &GetRegionOfinterset() const;
+    void SetRegionOfinterset(const QVector<QPoint> &newRegionOfinterset);
+
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
+    QVector<QPoint> m_RegionOfinterset;
     QString m_ActiveFilePath;
     QMutex *m_ImageMutex;
     QMutex *m_CommonMutex;

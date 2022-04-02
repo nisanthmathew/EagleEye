@@ -5,8 +5,7 @@ namespace EagleEye
 QPixmap ConvertRGBToGreyScale(const QPixmap &image)
 {
     QImage greyScaleImage = image.toImage().convertToFormat(QImage::Format_Grayscale8);
-    QPixmap greyScalePixmap = QPixmap::fromImage(greyScaleImage);
-    return greyScalePixmap;
+    return QPixmap::fromImage(greyScaleImage);
 }
 
 QPixmap ConvertRGBToEdges(const QPixmap &image)

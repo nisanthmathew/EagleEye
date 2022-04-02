@@ -58,9 +58,6 @@ border-color: rgba(0, 0, 0, 0);</string>
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout"/>
-      </item>
      </layout>
     </item>
    </layout>

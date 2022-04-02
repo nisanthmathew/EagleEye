@@ -18,7 +18,7 @@ using EERGBImageType = itk::Image<EERGBPixelType, 2>;
 
 
 template <typename T>
-typename T::Pointer EEITKImageFromQImage(const QImage &qImage)
+typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
 {
 
     typename T::Pointer image = nullptr;
@@ -86,7 +86,7 @@ typename T::Pointer EEITKImageFromQImage(const QImage &qImage)
 
 
 template <typename  T>
-QImage EEQImageFromITKImage(const typename itk::Image<T, 2>::Pointer itkImage)
+QImage EEITKImageToQImageAdapter(const typename itk::Image<T, 2>::Pointer itkImage)
 {
     auto width = itkImage->GetLargestPossibleRegion().GetSize()[0];
     auto height = itkImage->GetLargestPossibleRegion().GetSize()[1];

@@ -17,6 +17,7 @@ set(SOURCE
     ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/imageprocessingutilities.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/eeroiqrubberband.cpp
 )
 
 SET(HEADERS
@@ -25,6 +26,7 @@ SET(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/displayformat.h
     ${CMAKE_CURRENT_SOURCE_DIR}/itkutilities.h
     ${CMAKE_CURRENT_SOURCE_DIR}/imageprocessingutilities.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/eeroiqrubberband.h
 )
 
 add_library(${LIBRARY_NAME} STATIC

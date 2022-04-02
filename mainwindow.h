@@ -11,7 +11,6 @@
 #include <QImageReader>
 #include <QAction>
 #include <QResizeEvent>
-#include <QRubberBand>
 
 #include <memory>
 
@@ -19,6 +18,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class EEROIQRubberBand;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -27,6 +27,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void Open();
+    void SaveFileCopy();
+    void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
+
+private:
     void DisplayImage(const QString &fileName);
     void DisplayPixmap(const QPixmap &pixmap);
     void resizeEvent(QResizeEvent *e) override;
@@ -34,21 +40,13 @@ public:
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void wheelEvent(QWheelEvent *e) override;
-
-public slots:
-    void Open();
-    void SaveFileCopy();
-    void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
-
-private:
     void AddFileMenu();
     void AddToolsMenu();
     void AddDisplayFormats();
 
     Ui::MainWindow *ui;
-    std::unique_ptr<QRubberBand> m_Rubberband;
+    std::unique_ptr<EEROIQRubberBand> m_Rubberband;
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
     QPoint m_MouseStartPoint;
-    QPoint m_MouseEndPoint;
 };
 #endif // MAINWINDOW_H

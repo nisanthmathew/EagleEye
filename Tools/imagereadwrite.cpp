@@ -16,10 +16,10 @@ bool ImageReadWrite::EELoadImage()
 {
     QString activeFileName = QFileDialog::getOpenFileName(this,
                                                          tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    EagleEye::DataHandler::DATA_HANDLER().SetActiveFilePath(activeFileName);
+    EagleEye::DataHandler::SINGLE_INSTANCE().SetActiveFilePath(activeFileName);
     QImageReader imageReader(activeFileName);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    EagleEye::DataHandler::DATA_HANDLER().SetInputImagePixmap(newPixMap);
+    EagleEye::DataHandler::SINGLE_INSTANCE().SetInputImagePixmap(newPixMap);
     return (!newPixMap.isNull());
 }
 
