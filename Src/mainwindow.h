@@ -3,22 +3,26 @@
 
 #include "datahandler.h"
 #include "logger.h"
-#include "Tools/imagereadwrite.h"
-#include "Tools/displayformat.h"
+#include "Utilities/imagereadwriteutilities.h"
+#include "Utilities/displayformatutilities.h"
+#include "MenuItems/toolsmenu.h"
+#include "MenuItems/fileMenu.h"
+#include "MenuItems/imageprocessingmenu.h"
 
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QImageReader>
-#include <QAction>
 #include <QResizeEvent>
 
 #include <memory>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class EEROIQRubberBand;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -28,26 +32,23 @@ public:
     ~MainWindow();
 
 public slots:
-    void Open();
-    void SaveFileCopy();
-    void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
+    void DisplayPixmap();
+    void DisplayImage(const QString &fileName);
 
 private:
-    void DisplayImage(const QString &fileName);
     void DisplayPixmap(const QPixmap &pixmap);
     void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void wheelEvent(QWheelEvent *e) override;
-    void AddFileMenu();
-    void AddToolsMenu();
-    void AddDisplayFormats();
     QPoint MapPointToPixmap(QPoint point, QPixmap *pixmap);
 
     Ui::MainWindow *ui;
+    EagleEye::EEToolsMenu *m_ToolsMenu;
+    EagleEye::EEFileMenu *m_FileMenu;
+    EagleEye::EEImageProcessingMenu* m_ImageProcessingMenu;
     std::unique_ptr<EEROIQRubberBand> m_Rubberband;
-    std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
     QPoint m_MouseStartPoint;
 };
 #endif // MAINWINDOW_H

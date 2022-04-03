@@ -1,4 +1,4 @@
-#include "displayformat.h"
+#include "displayformatutilities.h"
 #include <../datahandler.h>
 
 

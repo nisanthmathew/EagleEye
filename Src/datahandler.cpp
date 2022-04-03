@@ -1,6 +1,6 @@
 #include "datahandler.h"
 #include "logger.h"
-#include "displayformat.h"
+#include "displayformatutilities.h"
 
 #include <QMutexLocker>
 
@@ -82,6 +82,26 @@ const QPixmap &DataHandler::GetROIPixmap() const
 void DataHandler::SetROIPixmap(const QPixmap &newROIPixmap)
 {
     m_ROIPixmap = newROIPixmap;
+}
+
+const QPixmap &DataHandler::GetImageLabelPixmap() const
+{
+    return m_ImageLabelPixmap;
+}
+
+void DataHandler::SetImageLabelPixmap(const QPixmap &newImageLabelPixmap)
+{
+    m_ImageLabelPixmap = newImageLabelPixmap;
+}
+
+const QPixmap &DataHandler::GetImageToBeDisplayed() const
+{
+    return m_ImageToBeDisplayed;
+}
+
+void DataHandler::SetImageToBeDisplayed(const QPixmap &newImageToBeDisplayed)
+{
+    m_ImageToBeDisplayed = newImageToBeDisplayed;
 }
 
 }

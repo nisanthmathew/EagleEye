@@ -21,7 +21,9 @@ ENDIF(ITK_FOUND)
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 SET(QT_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
 
-add_subdirectory(Tools)
+add_subdirectory(Utilities)
+add_subdirectory(CustomWidgets)
+add_subdirectory(MenuItems)
 
 set(SOURCE
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
@@ -48,14 +50,18 @@ option(BUILD_TESTING "Enable tests" ON)
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${QT_LIBRARIES}
     ${ITK_LIBRARIES}
-    ${PROJECT_NAME}_tools
+    ${PROJECT_NAME}_utilities
+    ${PROJECT_NAME}_customwidgets
+    ${PROJECT_NAME}_menuitems
     )
 
 # add the binary tree to the search path for include files
 target_include_directories(${PROJECT_NAME} PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           "${PROJECT_SOURCE_DIR}"
-                          "${PROJECT_SOURCE_DIR}/Tools"
+                          "${PROJECT_SOURCE_DIR}/Utilities"
+                          "${PROJECT_SOURCE_DIR}/CustomWidgets"
+                          "${PROJECT_SOURCE_DIR}/MenuItems"
                           )
 IF (BUILD_TESTING)
   add_subdirectory(Tests)

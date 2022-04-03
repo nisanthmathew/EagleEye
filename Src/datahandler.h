@@ -48,10 +48,18 @@ public:
     const QPixmap &GetROIPixmap() const;
     void SetROIPixmap(const QPixmap &newROIPixmap);
 
+    const QPixmap &GetImageLabelPixmap() const;
+    void SetImageLabelPixmap(const QPixmap &newImageLabelPixmap);
+
+    const QPixmap &GetImageToBeDisplayed() const;
+    void SetImageToBeDisplayed(const QPixmap &newImageToBeDisplayed);
+
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
+    QPixmap m_ImageLabelPixmap;
     QPixmap m_ROIPixmap;
+    QPixmap m_ImageToBeDisplayed;
     QRect m_RegionOfinterset;
     QString m_ActiveFilePath;
     QMutex *m_ImageMutex;
