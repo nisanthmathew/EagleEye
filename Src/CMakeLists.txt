@@ -29,15 +29,19 @@ set(SOURCE
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/logger.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc
+    )
 
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.h
     ${CMAKE_CURRENT_SOURCE_DIR}/datahandler.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/logger.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/logger.h
+    )
 
 set(UI
-    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui)
+    ${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.ui
+    )
 
 add_executable(${PROJECT_NAME}
     ${SOURCE}
