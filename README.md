@@ -1,4 +1,4 @@
-# EagleEye <img src=https://github.com/nisanthmathew/EagleEye/blob/master/g963.png width="100" height="100" />
+# EagleEye <img src=https://github.com/nisanthmathew/EagleEye/blob/master/icon.png width="100" height="100" />
 
 Image editor / analysis software
 
