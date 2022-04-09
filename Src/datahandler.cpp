@@ -1,6 +1,6 @@
 #include "datahandler.h"
 #include "logger.h"
-#include "displayformatutilities.h"
+#include "../Utilities/displayformatutilities.h"
 
 #include <QMutexLocker>
 

@@ -18,21 +18,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(HDRS_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/../datahandler.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../logger.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/imagereadwrite.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imagereadwriteutilities.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/displayformatutilities.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imageprocessingutilities.h
 )
 
 set(SRCS_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/../datahandler.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../logger.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/imagereadwrite.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Tools/displayformat.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imagereadwriteutilities.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/displayformatutilities.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imageprocessingutilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
 )
 
 
 SET(EAGLEEYE_TEST_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}}
-    ${CMAKE_CURRENT_SOURCE_DIR}}/../Tools
+    ${CMAKE_CURRENT_SOURCE_DIR}}/Utilities
     ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )
 

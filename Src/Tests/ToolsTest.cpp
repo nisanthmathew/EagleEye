@@ -1,8 +1,8 @@
 #include <QTest>
 #include <QObject>
 #include <QImageReader>
-#include <imagereadwrite.h>
-#include <displayformat.h>
+#include <../Utilities/imagereadwriteutilities.h>
+#include <../Utilities/displayformatutilities.h>
 #include <../datahandler.h>
 class ToolsTest : public QObject
 {
