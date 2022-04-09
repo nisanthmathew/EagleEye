@@ -36,7 +36,7 @@ public slots:
     void DisplayImage(const QString &fileName);
 
 private:
-    void DisplayPixmap(const QPixmap &pixmap);
+    void DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor = 1.0);
     void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;

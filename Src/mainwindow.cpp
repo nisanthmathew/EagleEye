@@ -58,12 +58,12 @@ void MainWindow::DisplayPixmap()
     DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetImageToBeDisplayed());
 }
 
-void MainWindow::DisplayPixmap(const QPixmap &pixmap)
+void MainWindow::DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor)
 {
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::DisplayPixmap(): Setting and displaying pixmap.",
                                                   EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::DataHandler::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
-    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width(), ui->imageLabel->height(),
+    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
                                             Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     EagleEye::DataHandler::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
@@ -126,10 +126,7 @@ void MainWindow::wheelEvent(QWheelEvent *e)
     if (zoomFactor >= 5.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
         return;
 
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap().scaled(
-                                  static_cast<int>(ui->imageLabel->width() * zoomFactor),
-                                  static_cast<int>(ui->imageLabel->height() * zoomFactor),
-                                  Qt::KeepAspectRatio));
+    DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);
     EagleEye::DataHandler::SINGLE_INSTANCE().SetZoomFactor(zoomFactor);
 }
 
