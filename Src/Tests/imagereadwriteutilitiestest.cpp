@@ -4,13 +4,13 @@
 #include <../Utilities/imagereadwriteutilities.h>
 #include <../Utilities/displayformatutilities.h>
 #include <../datahandler.h>
-class ToolsTest : public QObject
+class ImageReadWriteTest : public QObject
 {
     Q_OBJECT
 
 public:
-    ToolsTest();
-    ~ToolsTest();
+    ImageReadWriteTest();
+    ~ImageReadWriteTest();
 
 private slots:
     void TestSaveFileCopy();
@@ -18,30 +18,31 @@ private slots:
 };
 
 
-ToolsTest::ToolsTest()
+ImageReadWriteTest::ImageReadWriteTest()
 {
 
 }
 
-ToolsTest::~ToolsTest()
+ImageReadWriteTest::~ImageReadWriteTest()
 {
 
 }
 
 
-void ToolsTest::TestSaveFileCopy()
+void ImageReadWriteTest::TestSaveFileCopy()
 {
     EagleEye::ImageReadWrite ImageWriter;
     QPixmap imageToSave;
     QCOMPARE(ImageWriter.EESaveImageCopy(imageToSave), false);
-    ImageWriter.EELoadImage();
+
+    ImageWriter.EELoadImage(QCoreApplication::applicationDirPath() + "/TestImage.png");
 
     QImageReader imageReader(EagleEye::DataHandler::SINGLE_INSTANCE().GetActiveFilePath());
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    bool success = ImageWriter.EESaveImageCopy(newPixMap);
+    bool success = ImageWriter.EESaveImageCopy(newPixMap, QCoreApplication::applicationDirPath() + "/TestImage.png");
     QCOMPARE(success, true);
 }
 
-QTEST_MAIN(ToolsTest)
+QTEST_MAIN(ImageReadWriteTest)
 
-#include "ToolsTest.moc"
+#include "imagereadwriteutilitiestest.moc"

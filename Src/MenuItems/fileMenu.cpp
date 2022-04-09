@@ -5,10 +5,10 @@
 namespace EagleEye
 {
 EEFileMenu::EEFileMenu(QMenu *parent)
-    : QMenu{parent}
+    : QMenu{parent},
+      m_ImageReadWrite(std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite()))
 {
     m_FileMenu = parent;
-    m_ImageReadWrite = std::unique_ptr<EagleEye::ImageReadWrite>(new EagleEye::ImageReadWrite());
     AddFileActions();
 }
 

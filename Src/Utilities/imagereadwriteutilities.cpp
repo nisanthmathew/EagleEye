@@ -12,28 +12,33 @@ ImageReadWrite::ImageReadWrite(QWidget *parent) : QWidget(nullptr)
 
 }
 
-bool ImageReadWrite::EELoadImage()
+bool ImageReadWrite::EELoadImage(QString filePath)
 {
-    QString activeFileName = QFileDialog::getOpenFileName(this,
-                                                         tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetActiveFilePath(activeFileName);
-    QImageReader imageReader(activeFileName);
+    if (filePath.isEmpty())
+    {
+        filePath = QFileDialog::getOpenFileName(this, tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
+    }
+
+    EagleEye::DataHandler::SINGLE_INSTANCE().SetActiveFilePath(filePath);
+    QImageReader imageReader(filePath);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
     EagleEye::DataHandler::SINGLE_INSTANCE().SetInputImagePixmap(newPixMap);
     return (!newPixMap.isNull());
 }
 
-bool ImageReadWrite::EESaveImageCopy(const QPixmap &imageToSave)
+bool ImageReadWrite::EESaveImageCopy(const QPixmap &imageToSave, QString filePath)
 {
     if (imageToSave.isNull())
     {
         return  false;
     }
 
-    auto newFileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
+    if (filePath.isEmpty())
+    {
+        filePath = QFileDialog::getSaveFileName(this, tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
+    }
 
-    if (!imageToSave.save(newFileName))
+    if (!imageToSave.save(filePath))
     {
         return false;
     }
