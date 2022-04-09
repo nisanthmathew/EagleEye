@@ -29,14 +29,14 @@ set(SRCS_TEST
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imagereadwriteutilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/displayformatutilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imageprocessingutilities.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/ToolsTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/imagereadwriteutilitiestest.cpp
 )
 
 
 SET(EAGLEEYE_TEST_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}}
     ${CMAKE_CURRENT_SOURCE_DIR}}/Utilities
-    ${CMAKE_CURRENT_SOURCE_DIR}/tests
+    ${CMAKE_CURRENT_SOURCE_DIR}/Tests
 )
 
 
@@ -44,6 +44,9 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${EAGLEEYE_TEST_INCLUDE_PATH}
 )
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/TestImages/TestImage.png
+    ${CMAKE_CURRENT_BINARY_DIR}/TestImage.png COPYONLY)
 
 enable_testing()
 
