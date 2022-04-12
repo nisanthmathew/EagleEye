@@ -1,9 +1,9 @@
 #include "imagereadwriteutilities.h"
-#include <../datahandler.h>
-#include "../logger.h"
+#include "../Singletons/data.h"
+#include "../Singletons/logger.h"
 
 #include <QtWidgets/QFileDialog>
-#include "qimagereader.h"
+#include <qimagereader.h>
 
 namespace EagleEye
 {
@@ -19,10 +19,10 @@ bool ImageReadWrite::EELoadImage(QString filePath)
         filePath = QFileDialog::getOpenFileName(this, tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp)"));
     }
 
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetActiveFilePath(filePath);
+    EagleEye::Data::SINGLE_INSTANCE().SetActiveFilePath(filePath);
     QImageReader imageReader(filePath);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetInputImagePixmap(newPixMap);
+    EagleEye::Data::SINGLE_INSTANCE().SetInputImagePixmap(newPixMap);
     return (!newPixMap.isNull());
 }
 

@@ -39,13 +39,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::DisplayImage(const QString &fileName)
 {
-    if (!EagleEye::DataHandler::SINGLE_INSTANCE().GetOriginalImagePixmap().load(fileName))
+    if (!EagleEye::Data::SINGLE_INSTANCE().GetOriginalImagePixmap().load(fileName))
     {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Cannot load %1").arg(QDir::toNativeSeparators(fileName)));
     }
 
-    DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetOriginalImagePixmap());
+    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetOriginalImagePixmap());
 }
 
 void MainWindow::DisplayPixmap()
@@ -55,24 +55,24 @@ void MainWindow::DisplayPixmap()
         m_Rubberband->hide();
     }
 
-    DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetImageToBeDisplayed());
+    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetImageToBeDisplayed());
 }
 
 void MainWindow::DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor)
 {
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::DisplayPixmap(): Setting and displaying pixmap.",
                                                   EagleEye::LOGLEVEL::EE_DEBUG);
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
+    EagleEye::Data::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
     ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
                                             Qt::KeepAspectRatio));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
+    EagleEye::Data::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e)
 {
     Q_UNUSED(e);
-    ui->imageLabel->setPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap().scaled(ui->imageLabel->width(),
+    ui->imageLabel->setPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap().scaled(ui->imageLabel->width(),
                                                                                                         ui->imageLabel->height(),
                                                                                                         Qt::KeepAspectRatio));
 }
@@ -80,7 +80,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     m_MouseStartPoint = ui->imageLabel->mapFrom(this, e->pos());
-    if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI())
+    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI())
     {
         if (!m_Rubberband)
         {
@@ -93,7 +93,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-    if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
+    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
     {
         m_Rubberband->setGeometry(QRect(m_MouseStartPoint, ui->imageLabel->mapFrom(this, e->pos())).normalized());
     }
@@ -101,15 +101,15 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
+    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
     {
         const auto rubberbandGeometry = m_Rubberband->geometry();
         QPixmap displayedPixmap = ui->imageLabel->pixmap(Qt::ReturnByValue);
         const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
         const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
         QRect ROI (topLeft, bottomRight);
-        EagleEye::DataHandler::SINGLE_INSTANCE().SetRegionOfinterset(ROI);
-        EagleEye::DataHandler::SINGLE_INSTANCE().SetROIPixmap(displayedPixmap.copy(ROI));
+        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(ROI);
+        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(displayedPixmap.copy(ROI));
     }
 }
 
@@ -121,13 +121,13 @@ void MainWindow::wheelEvent(QWheelEvent *e)
     }
 
     int zoomDir = e->angleDelta().y() / std::abs(e->angleDelta().y());
-    float zoomFactor = EagleEye::DataHandler::SINGLE_INSTANCE().GetZoomFactor() + (zoomDir * 0.1);
+    float zoomFactor = EagleEye::Data::SINGLE_INSTANCE().GetZoomFactor() + (zoomDir * 0.1);
 
     if (zoomFactor >= 5.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
         return;
 
-    DisplayPixmap(EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetZoomFactor(zoomFactor);
+    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);
+    EagleEye::Data::SINGLE_INSTANCE().SetZoomFactor(zoomFactor);
 }
 
 QPoint MainWindow::MapPointToPixmap(QPoint point, QPixmap *pixmap)

@@ -7,10 +7,10 @@
 #include <QMutexLocker>
 namespace EagleEye {
 
-class DataHandler
+class Data
 {
 private:
-    DataHandler():
+    Data():
         m_ImageMutex(nullptr),
         m_CommonMutex(nullptr),
         m_ZoomFactor(1.0f),
@@ -19,13 +19,13 @@ private:
 
     }
 public:
-    static DataHandler& SINGLE_INSTANCE(){
-        static DataHandler theInstance;
+    static Data& SINGLE_INSTANCE(){
+        static Data theInstance;
         return theInstance;
     }
 
-    DataHandler (const DataHandler &) = delete;
-    DataHandler& operator=(const DataHandler &) = delete;
+    Data (const Data &) = delete;
+    Data& operator=(const Data &) = delete;
 
     QPixmap GetOriginalImagePixmap() const;
     void SetInputImagePixmap(const QPixmap &inputImagePixMap);

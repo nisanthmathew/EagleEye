@@ -3,7 +3,7 @@
 #include <QImageReader>
 #include <../Utilities/imagereadwriteutilities.h>
 #include <../Utilities/displayformatutilities.h>
-#include <../datahandler.h>
+#include <../Singletons/data.h>
 class ImageReadWriteTest : public QObject
 {
     Q_OBJECT
@@ -37,7 +37,7 @@ void ImageReadWriteTest::TestSaveFileCopy()
 
     ImageWriter.EELoadImage(QCoreApplication::applicationDirPath() + "/TestImage.png");
 
-    QImageReader imageReader(EagleEye::DataHandler::SINGLE_INSTANCE().GetActiveFilePath());
+    QImageReader imageReader(EagleEye::Data::SINGLE_INSTANCE().GetActiveFilePath());
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
     bool success = ImageWriter.EESaveImageCopy(newPixMap, QCoreApplication::applicationDirPath() + "/TestImage.png");
     QCOMPARE(success, true);

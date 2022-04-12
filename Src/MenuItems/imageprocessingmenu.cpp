@@ -1,6 +1,6 @@
 #include "imageprocessingmenu.h"
-#include "../datahandler.h"
-#include "../logger.h"
+#include "../Singletons/data.h"
+#include "../Singletons/logger.h"
 #include "../Utilities/imageprocessingutilities.h"
 
 namespace EagleEye
@@ -40,12 +40,12 @@ QList<QAction*> EEImageProcessingMenu::AddImageProcessingActions()
 
 void EEImageProcessingMenu::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
 {
-    auto pixmapToBeProcessed = EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap();
-    if (EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI()) // use ROI option select the use the ROI image
+    auto pixmapToBeProcessed = EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap();
+    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI()) // use ROI option select the use the ROI image
     {
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("EEImageProcessingMenu::ConvertDisplayFormat(): ROI is valid, hence using it.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        pixmapToBeProcessed = EagleEye::DataHandler::SINGLE_INSTANCE().GetROIPixmap();
+        pixmapToBeProcessed = EagleEye::Data::SINGLE_INSTANCE().GetROIPixmap();
     }
     QPixmap imageToBeDisplayed;
 
@@ -56,23 +56,23 @@ void EEImageProcessingMenu::ConvertDisplayFormat(EagleEye::DisplayFormats displa
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
         imageToBeDisplayed = CombineROIAndDisplayedPixmap(
                     ConvertRGBToGreyScale(pixmapToBeProcessed),
-                    EagleEye::DataHandler::SINGLE_INSTANCE().GetImageLabelPixmap());
+                    EagleEye::Data::SINGLE_INSTANCE().GetImageLabelPixmap());
         break;
     case EagleEye::DisplayFormats::Edge:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
         imageToBeDisplayed = EagleEye::CombineROIAndDisplayedPixmap(
                     EagleEye::ConvertRGBToEdges(pixmapToBeProcessed),
-                    EagleEye::DataHandler::SINGLE_INSTANCE().GetImageLabelPixmap());
+                    EagleEye::Data::SINGLE_INSTANCE().GetImageLabelPixmap());
         break;
     case EagleEye::DisplayFormats::Original:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("EEImageProcessingMenu::ConvertDisplayFormat(): Reverting to Greyscale.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        imageToBeDisplayed = EagleEye::DataHandler::SINGLE_INSTANCE().GetOriginalImagePixmap();
+        imageToBeDisplayed = EagleEye::Data::SINGLE_INSTANCE().GetOriginalImagePixmap();
         break;
     }
 
-    EagleEye::DataHandler::SINGLE_INSTANCE().SetImageToBeDisplayed(imageToBeDisplayed);
+    EagleEye::Data::SINGLE_INSTANCE().SetImageToBeDisplayed(imageToBeDisplayed);
     emit ChangeDisplayedImage();
 }
 }

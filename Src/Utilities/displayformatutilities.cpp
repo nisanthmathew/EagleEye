@@ -1,5 +1,5 @@
 #include "../Utilities/displayformatutilities.h"
-#include <../datahandler.h>
+#include "../Singletons/data.h"
 
 
 namespace EagleEye
@@ -17,15 +17,15 @@ QPixmap ConvertRGBToEdges(const QPixmap &image)
 
 QPixmap CombineROIAndDisplayedPixmap(const QPixmap &roiPixmap, const QPixmap &displayedPixmap)
 {
-    if (!EagleEye::DataHandler::SINGLE_INSTANCE().GetSelectROI())//if no ROI select simply return the roi pixmap
+    if (!EagleEye::Data::SINGLE_INSTANCE().GetSelectROI())//if no ROI select simply return the roi pixmap
     {
         return roiPixmap;
     }
 
     QImage roiImage = roiPixmap.toImage();
     QImage displayedImage = displayedPixmap.toImage();
-    int startX = EagleEye::DataHandler::SINGLE_INSTANCE().GetRegionOfinterset().topLeft().x();
-    int startY = EagleEye::DataHandler::SINGLE_INSTANCE().GetRegionOfinterset().topLeft().y();
+    int startX = EagleEye::Data::SINGLE_INSTANCE().GetRegionOfinterset().topLeft().x();
+    int startY = EagleEye::Data::SINGLE_INSTANCE().GetRegionOfinterset().topLeft().y();
 
     for (int row = 0; row < roiImage.height(); row++)
     {

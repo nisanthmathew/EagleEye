@@ -1,5 +1,5 @@
 #include "toolsmenu.h"
-#include "../datahandler.h"
+#include "../Singletons/data.h"
 
 namespace EagleEye
 {
@@ -17,12 +17,12 @@ QList<QAction*> EEToolsMenu::AddToolActions()
     selectROI->setCheckable(true);
     connect(selectROI, &QAction::toggled, [](bool checked)
     {
-        EagleEye::DataHandler::SINGLE_INSTANCE().SetSelectROI(checked);
+        EagleEye::Data::SINGLE_INSTANCE().SetSelectROI(checked);
 
         if (!checked) //clear everything is unchecked
         {
-            EagleEye::DataHandler::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
-            EagleEye::DataHandler::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
+            EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
+            EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
         }
 
     });

@@ -1,6 +1,6 @@
 #include "fileMenu.h"
-#include "../datahandler.h"
-#include "../logger.h"
+#include "../Singletons/data.h"
+#include "../Singletons/logger.h"
 
 namespace EagleEye
 {
@@ -29,7 +29,7 @@ void EEFileMenu::Open()
 {
     if (m_ImageReadWrite->EELoadImage())
     {
-        const QString filePath {EagleEye::DataHandler::SINGLE_INSTANCE().GetActiveFilePath()};
+        const QString filePath {EagleEye::Data::SINGLE_INSTANCE().GetActiveFilePath()};
         emit DisplayImage(filePath);
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("MainWindow::Open(): loading image %1").arg(filePath),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
@@ -43,7 +43,7 @@ void EEFileMenu::Open()
 
 void EEFileMenu::SaveFileCopy()
 {
-    auto imageCopy = EagleEye::DataHandler::SINGLE_INSTANCE().GetDisplayedImagePixmap();
+    auto imageCopy = EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap();
     m_ImageReadWrite->EESaveImageCopy(imageCopy);
 }
 

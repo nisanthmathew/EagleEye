@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "datahandler.h"
-#include "logger.h"
+#include "Singletons/data.h"
+#include "Singletons/logger.h"
 #include "Utilities/imagereadwriteutilities.h"
 #include "Utilities/displayformatutilities.h"
 #include "MenuItems/toolsmenu.h"
