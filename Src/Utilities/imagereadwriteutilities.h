@@ -12,7 +12,7 @@ public:
 
     bool EELoadImage(QString filePath = "");
     bool EESaveImageCopy(const QPixmap &imageToSave, QString filePath = "");
-
+    QPixmap EELoadDicomImage(const QString &filePath);
 };
 }
 #endif // IMAGEREADWRITE_H

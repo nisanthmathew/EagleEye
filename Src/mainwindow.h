@@ -33,7 +33,7 @@ public:
 
 public slots:
     void DisplayPixmap();
-    void DisplayImage(const QString &fileName);
+    void DisplayImage();
 
 private:
     void DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor = 1.0);

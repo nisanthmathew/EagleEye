@@ -30,7 +30,7 @@ void EEFileMenu::Open()
     if (m_ImageReadWrite->EELoadImage())
     {
         const QString filePath {EagleEye::Data::SINGLE_INSTANCE().GetActiveFilePath()};
-        emit DisplayImage(filePath);
+        emit DisplayImage();
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("MainWindow::Open(): loading image %1").arg(filePath),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
     }

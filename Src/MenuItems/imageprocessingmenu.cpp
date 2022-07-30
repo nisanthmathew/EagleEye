@@ -12,7 +12,7 @@ EEImageProcessingMenu::EEImageProcessingMenu(QMenu *parent)
     AddImageProcessingActions();
 }
 
-QList<QAction*> EEImageProcessingMenu::AddImageProcessingActions()
+void EEImageProcessingMenu::AddImageProcessingActions()
 {
     QAction *greyScaleAction = new QAction(tr("&GreyScale"), this);
     m_ImageProcessingMenu->addAction(greyScaleAction);
@@ -34,8 +34,6 @@ QList<QAction*> EEImageProcessingMenu::AddImageProcessingActions()
     {
         ConvertDisplayFormat(EagleEye::DisplayFormats::Original);
     });
-
-    return m_ImageProcessingMenu->actions();
 }
 
 void EEImageProcessingMenu::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)

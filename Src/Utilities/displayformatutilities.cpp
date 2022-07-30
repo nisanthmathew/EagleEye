@@ -1,7 +1,6 @@
 #include "../Utilities/displayformatutilities.h"
 #include "../Singletons/data.h"
 
-
 namespace EagleEye
 {
 QPixmap ConvertRGBToGreyScale(const QPixmap &image)
@@ -41,5 +40,4 @@ QPixmap CombineROIAndDisplayedPixmap(const QPixmap &roiPixmap, const QPixmap &di
     }
     return QPixmap::fromImage(displayedImage);
 }
-
 }

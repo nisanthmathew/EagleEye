@@ -15,7 +15,7 @@ public:
     explicit EEFileMenu(QMenu *parent = nullptr);
 
 signals:
-    void DisplayImage(const QString &fileName);
+    void DisplayImage();
 
 private slots:
     void Open();

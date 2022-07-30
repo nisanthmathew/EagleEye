@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
 
 
     m_FileMenu = new EagleEye::EEFileMenu(menuBar()->addMenu("&File"));
-    connect(m_FileMenu, SIGNAL(DisplayImage(QString)), this, SLOT(DisplayImage(QString)));
+    connect(m_FileMenu, SIGNAL(DisplayImage()), this, SLOT(DisplayImage()));
 
     m_ToolsMenu = new EagleEye::EEToolsMenu(menuBar()->addMenu("&Tools"));
 
@@ -37,13 +37,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::DisplayImage(const QString &fileName)
+void MainWindow::DisplayImage()
 {
-    if (!EagleEye::Data::SINGLE_INSTANCE().GetOriginalImagePixmap().load(fileName))
-    {
-        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("Cannot load %1").arg(QDir::toNativeSeparators(fileName)));
-    }
 
     DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetOriginalImagePixmap());
 }
@@ -53,6 +48,8 @@ void MainWindow::DisplayPixmap()
     if (m_Rubberband)//hiding ROI
     {
         m_Rubberband->hide();
+        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
+        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
     }
 
     DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetImageToBeDisplayed());
@@ -60,11 +57,9 @@ void MainWindow::DisplayPixmap()
 
 void MainWindow::DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor)
 {
-    EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::DisplayPixmap(): Setting and displaying pixmap.",
-                                                  EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Data::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
     ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
-                                            Qt::KeepAspectRatio));
+                                            Qt::KeepAspectRatio, Qt::FastTransformation));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     EagleEye::Data::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
 }
@@ -73,8 +68,8 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 {
     Q_UNUSED(e);
     ui->imageLabel->setPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap().scaled(ui->imageLabel->width(),
-                                                                                                        ui->imageLabel->height(),
-                                                                                                        Qt::KeepAspectRatio));
+                                                                                                 ui->imageLabel->height(),
+                                                                                                 Qt::KeepAspectRatio));
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
@@ -104,6 +99,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
     {
         const auto rubberbandGeometry = m_Rubberband->geometry();
+        if (rubberbandGeometry.width() == 0 || rubberbandGeometry.height() == 0)
+            return;
+
         QPixmap displayedPixmap = ui->imageLabel->pixmap(Qt::ReturnByValue);
         const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
         const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
@@ -118,12 +116,14 @@ void MainWindow::wheelEvent(QWheelEvent *e)
     if (m_Rubberband)
     {
         m_Rubberband->hide();
+        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
+        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
     }
 
     int zoomDir = e->angleDelta().y() / std::abs(e->angleDelta().y());
     float zoomFactor = EagleEye::Data::SINGLE_INSTANCE().GetZoomFactor() + (zoomDir * 0.1);
 
-    if (zoomFactor >= 5.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
+    if (zoomFactor >= 8.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
         return;
 
     DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);

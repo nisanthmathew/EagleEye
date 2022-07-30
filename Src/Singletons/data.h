@@ -54,6 +54,8 @@ public:
     const QPixmap &GetImageToBeDisplayed() const;
     void SetImageToBeDisplayed(const QPixmap &newImageToBeDisplayed);
 
+    float GetDisplayPixelLengthInMillimeter();
+
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;
@@ -64,6 +66,7 @@ private:
     QString m_ActiveFilePath;
     QMutex *m_ImageMutex;
     QMutex *m_CommonMutex;
+
     float m_ZoomFactor;
     bool m_SelectROI;
 };

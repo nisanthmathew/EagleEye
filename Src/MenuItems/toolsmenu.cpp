@@ -18,12 +18,8 @@ QList<QAction*> EEToolsMenu::AddToolActions()
     connect(selectROI, &QAction::toggled, [](bool checked)
     {
         EagleEye::Data::SINGLE_INSTANCE().SetSelectROI(checked);
-
-        if (!checked) //clear everything is unchecked
-        {
-            EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
-            EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
-        }
+        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
+        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
 
     });
 

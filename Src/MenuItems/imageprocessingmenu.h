@@ -18,7 +18,7 @@ signals:
     void ChangeDisplayedImage();
 
 private:
-    QList<QAction *> AddImageProcessingActions();
+    void AddImageProcessingActions();
     void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
     QMenu *m_ImageProcessingMenu;
 };
