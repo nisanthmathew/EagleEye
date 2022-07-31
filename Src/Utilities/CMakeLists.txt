@@ -35,4 +35,5 @@ add_library(${LIBRARY_NAME} STATIC
 target_link_libraries(${LIBRARY_NAME}
      ${QT_LIBRARIES}
      ${ITK_LIBRARIES}
+     ${PROJECT_NAME}_singletons
     )

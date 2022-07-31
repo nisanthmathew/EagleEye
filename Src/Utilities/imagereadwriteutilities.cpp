@@ -9,7 +9,6 @@
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkRescaleIntensityImageFilter.h"
-#include "itkCastImageFilter.h"
 #include "itkImageFileWriter.h"
 #include "itkNumericTraits.h"
 
