@@ -59,7 +59,7 @@ void MainWindow::DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor)
 {
     EagleEye::Data::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
     ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
-                                            Qt::KeepAspectRatio, Qt::FastTransformation));
+                                            Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->imageLabel->setAlignment(Qt::AlignCenter);
     EagleEye::Data::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
 }
@@ -123,11 +123,11 @@ void MainWindow::wheelEvent(QWheelEvent *e)
     int zoomDir = e->angleDelta().y() / std::abs(e->angleDelta().y());
     float zoomFactor = EagleEye::Data::SINGLE_INSTANCE().GetZoomFactor() + (zoomDir * 0.1);
 
-    if (zoomFactor >= 8.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 4 times the size
+    if (zoomFactor >= 8.0 || zoomFactor <= 0.5) //zoom out is permitted only till half size and zoom in for 8 times the size
         return;
 
-    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);
     EagleEye::Data::SINGLE_INSTANCE().SetZoomFactor(zoomFactor);
+    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetDisplayedImagePixmap(), zoomFactor);
 }
 
 QPoint MainWindow::MapPointToPixmap(QPoint point, QPixmap *pixmap)
