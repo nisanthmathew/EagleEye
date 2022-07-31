@@ -54,8 +54,6 @@ public:
     const QPixmap &GetImageToBeDisplayed() const;
     void SetImageToBeDisplayed(const QPixmap &newImageToBeDisplayed);
 
-    float GetDisplayPixelLengthInMillimeter();
-
 private:
     QPixmap m_InputImagePixMap;
     QPixmap m_DisplayedImagePixmap;

@@ -3,9 +3,6 @@
 #include "../Utilities/displayformatutilities.h"
 
 #include <QMutexLocker>
-#include <QApplication>
-#include <QDesktopWidget>
-
 #include <iostream>
 
 namespace EagleEye{
@@ -105,27 +102,4 @@ void Data::SetImageToBeDisplayed(const QPixmap &newImageToBeDisplayed)
 {
     m_ImageToBeDisplayed = newImageToBeDisplayed;
 }
-
-float Data::GetDisplayPixelLengthInMillimeter()
-{
-    const int width_mm  = QApplication::desktop()->widthMM();
-    const int height_mm = QApplication::desktop()->heightMM();
-    const int numeberOfXPixels  = QApplication::desktop()->width();
-    const int numeberOfYPixels = QApplication::desktop()->height();
-
-    const float pixelXSizeInMillimeter = static_cast<float>(width_mm) / numeberOfXPixels;
-    const float pixelYSizeInMillimeter = static_cast<float>(height_mm) / numeberOfYPixels;
-    const float pixelSizeInMillimeter = (pixelXSizeInMillimeter + pixelYSizeInMillimeter) / 2.0f;
-
-    EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("Data::GetDisplayPixelLengthInMillimeter(): pixelSizeInMillimeter is %1. "
-                        "Screen width_mm is %2, Screen height_mm is %3 "
-                        "numeberOfXPixels is %4, numeberOfYPixels is %5")
-                .arg(QString::number(pixelSizeInMillimeter)).arg(width_mm).arg(height_mm).arg(numeberOfXPixels).arg(numeberOfYPixels),
-                EagleEye::LOGLEVEL::EE_DEBUG);
-
-    return pixelSizeInMillimeter;
-}
-
-
 }
