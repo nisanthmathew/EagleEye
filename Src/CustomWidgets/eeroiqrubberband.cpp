@@ -21,12 +21,12 @@ void EEROIQRubberBand::EEROIQRubberBand::paintEvent(QPaintEvent *event)
 QPen EEROIQRubberBand::SetupROIPen()
 {
     QPen ROIPen;
-    ROIPen.setColor(Qt::gray);
+    ROIPen.setColor(QColor(250, 189, 17));
     QVector<qreal> dashes;
     const qreal space = 4;
     const qreal line = 4;
     dashes << line << space << line << space << line << space << line << space << line << space;
     ROIPen.setDashPattern(dashes);
-    ROIPen.setWidth(2);
+    ROIPen.setWidth(4);
     return ROIPen;
 }
