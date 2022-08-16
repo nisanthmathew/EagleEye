@@ -3,6 +3,8 @@
 
 #include "Singletons/data.h"
 #include "Singletons/logger.h"
+#include "Singletons/imagemodel.h"
+#include "Singletons/imageviewcontroller.h"
 #include "Utilities/imagereadwriteutilities.h"
 #include "Utilities/displayformatutilities.h"
 #include "MenuItems/toolsmenu.h"
@@ -33,11 +35,10 @@ public:
 
 public slots:
     void DisplayPixmap();
-    void DisplayImage();
+    void OnImageModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
     void DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor = 1.0);
-    void resizeEvent(QResizeEvent *e) override;
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
@@ -45,6 +46,8 @@ private:
     QPoint MapPointToPixmap(QPoint point, QPixmap *pixmap);
 
     Ui::MainWindow *ui;
+    EagleEye::ImageModel *m_ImageModel;
+    EagleEye::ImageViewController *m_ImageViewController;
     EagleEye::EEToolsMenu *m_ToolsMenu;
     EagleEye::EEFileMenu *m_FileMenu;
     EagleEye::EEImageProcessingMenu* m_ImageProcessingMenu;

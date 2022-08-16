@@ -35,9 +35,10 @@ void ImageReadWriteTest::TestSaveFileCopy()
     QPixmap imageToSave;
     QCOMPARE(ImageWriter.EESaveImageCopy(imageToSave), false);
 
-    ImageWriter.EELoadImage(QCoreApplication::applicationDirPath() + "/TestImage.png");
+    QString filePath {QCoreApplication::applicationDirPath() + "/TestImage.png"};
+    ImageWriter.EELoadImage(filePath);
 
-    QImageReader imageReader(EagleEye::Data::SINGLE_INSTANCE().GetActiveFilePath());
+    QImageReader imageReader(filePath);
     QPixmap newPixMap = QPixmap::fromImageReader(&imageReader);
     bool success = ImageWriter.EESaveImageCopy(newPixMap, QCoreApplication::applicationDirPath() + "/TestImage.png");
     QCOMPARE(success, true);

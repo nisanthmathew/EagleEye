@@ -2,6 +2,7 @@
 #define IMAGEPROCESSINGMENU_H
 
 #include "../Utilities/displayformatutilities.h"
+#include "../Singletons/imageviewcontroller.h"
 
 #include <QMenu>
 #include <QAction>
@@ -12,15 +13,15 @@ class EEImageProcessingMenu : public QMenu
 {
     Q_OBJECT
 public:
-    explicit EEImageProcessingMenu(QMenu *parent = nullptr);
+    explicit EEImageProcessingMenu(QMenu *parent = nullptr, EagleEye::ImageViewController *controller = nullptr);
 
 signals:
-    void ChangeDisplayedImage();
+    void ConvertImageDisplayFormat(EagleEye::DisplayFormats displayFormat);
 
 private:
     void AddImageProcessingActions();
-    void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
     QMenu *m_ImageProcessingMenu;
+    EagleEye::ImageViewController *m_ImageViewController;
 };
 }
 #endif // IMAGEPROCESSINGMENU_H

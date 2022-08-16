@@ -36,14 +36,12 @@ QPixmap EagleEye::ImageReadWrite::EELoadDicomImage(const QString &filePath)
     return QPixmap::fromImage(dicomImage);
 }
 
-bool ImageReadWrite::EELoadImage(QString filePath)
+QPixmap ImageReadWrite::EELoadImage(QString &filePath)
 {
     if (filePath.isEmpty())
     {
         filePath = QFileDialog::getOpenFileName(this, tr("Open Image"), "C:/", tr("Image Files (*.png *.jpg *.bmp *.dcm)"));
     }
-
-    EagleEye::Data::SINGLE_INSTANCE().SetActiveFilePath(filePath);
 
     QPixmap newPixMap;
 
@@ -57,8 +55,7 @@ bool ImageReadWrite::EELoadImage(QString filePath)
         newPixMap = QPixmap::fromImageReader(&imageReader);
     }
 
-    EagleEye::Data::SINGLE_INSTANCE().SetInputImagePixmap(newPixMap);
-    return (!newPixMap.isNull());
+    return newPixMap;
 }
 
 bool ImageReadWrite::EESaveImageCopy(const QPixmap &imageToSave, QString filePath)
