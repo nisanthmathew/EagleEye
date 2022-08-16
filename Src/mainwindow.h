@@ -34,11 +34,9 @@ public:
     ~MainWindow();
 
 public slots:
-    void DisplayPixmap();
     void OnImageModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
-    void DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor = 1.0);
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;

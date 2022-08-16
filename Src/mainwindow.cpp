@@ -62,27 +62,6 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
     }
 }
 
-void MainWindow::DisplayPixmap()
-{
-    if (m_Rubberband)//hiding ROI
-    {
-        m_Rubberband->hide();
-        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
-        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
-    }
-
-    DisplayPixmap(EagleEye::Data::SINGLE_INSTANCE().GetImageToBeDisplayed());
-}
-
-void MainWindow::DisplayPixmap(const QPixmap &pixmap, const float &zoomFactor)
-{
-    EagleEye::Data::SINGLE_INSTANCE().SetDisplayedImagePixmap(pixmap);
-    ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
-                                            Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-    EagleEye::Data::SINGLE_INSTANCE().SetImageLabelPixmap(ui->imageLabel->pixmap(Qt::ReturnByValue));
-}
-
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     m_MouseStartPoint = ui->imageLabel->mapFrom(this, e->pos());
