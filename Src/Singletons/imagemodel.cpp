@@ -39,8 +39,8 @@ void ImageModel::SetNewImage()
     if (!newPixmap.isNull())
     {
         SetData(ImageModel::OriginalImagePixmap, QVariant::fromValue(newPixmap));
-        SetData(ImageModel::DisplayedImagePixmap, QVariant::fromValue(newPixmap));
         SetData(ImageModel::ActiveImagePath, QVariant::fromValue(filePath));
+        SetData(ImageModel::DisplayedImagePixmap, QVariant::fromValue(newPixmap));
         const int width = GetData<int>(ImageModel::ImageViewLabelWidth);
         const int height = GetData<int>(ImageModel::ImageViewLabelHeight);
         const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
@@ -115,7 +115,7 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
                         ConvertRGBToGreyScale(pixmapToBeProcessed),
                         GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap), startX, startY);
         }
-        else //if no ROI select simply return the roi pixmap
+        else //if no ROI select simply process the entire image
         {
             imageToBeDisplayed = ConvertRGBToGreyScale(pixmapToBeProcessed);
         }
@@ -131,7 +131,7 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
                         EagleEye::ConvertRGBToEdges(pixmapToBeProcessed),
                         GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap), startX, startY);
         }
-        else //if no ROI select simply return the roi pixmap
+        else //if no ROI select simply process the entire image
         {
             imageToBeDisplayed = EagleEye::ConvertRGBToEdges(pixmapToBeProcessed);
         }
@@ -143,7 +143,12 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
         break;
     }
 
+    const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
     SetData(EagleEye::ImageModel::DisplayedImagePixmap, QVariant::fromValue(imageToBeDisplayed));
+    SetData(EagleEye::ImageModel::ImageLabelPixmap, QVariant::fromValue(
+                imageToBeDisplayed.scaled(GetData<int>(ImageModel::ImageViewLabelWidth) * zoomFactor,
+                                          GetData<int>(ImageModel::ImageViewLabelHeight) * zoomFactor,
+                                          Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 }
 
 void ImageModel::SelectRectangularRegionOfInterest(bool start)

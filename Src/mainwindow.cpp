@@ -46,21 +46,12 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
     const auto range = QItemSelectionRange(topLeft, bottomRight);
     if (range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageLabelPixmap)))
     {
-        auto pixmap = m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap);
-        ui->imageLabel->setPixmap(pixmap);
-    }
-
-    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::DisplayedImagePixmap)))
-    {
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::OnImageModelDataChanged(): DisplayedImagePixmap changed.",
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::OnImageModelDataChanged(): ImageLabelPixmap changed.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        auto pixmap {m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::DisplayedImagePixmap)};
-        auto zoomFactor {m_ImageModel->GetData<float>(EagleEye::ImageModel::ZoomFactor)};
-        ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
-                                                    Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        ui->imageLabel->setPixmap(m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
     }
 
-    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)))
+    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)) )
     {
         m_RectangularSelectedRegion->hide();
         m_ImageModel->SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(QRect()));
