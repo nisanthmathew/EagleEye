@@ -1,5 +1,4 @@
 #include "imageprocessingmenu.h"
-#include "../Singletons/data.h"
 #include "../Singletons/logger.h"
 #include "../Utilities/imageprocessingutilities.h"
 

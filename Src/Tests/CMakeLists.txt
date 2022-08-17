@@ -16,7 +16,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 set(HDRS_TEST
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Singletons/data.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../Singletons/logger.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imagereadwriteutilities.h
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/displayformatutilities.h
@@ -24,7 +23,6 @@ set(HDRS_TEST
 )
 
 set(SRCS_TEST
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Singletons/data.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Singletons/logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/imagereadwriteutilities.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../Utilities/displayformatutilities.cpp

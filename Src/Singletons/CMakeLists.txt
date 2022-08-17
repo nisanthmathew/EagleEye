@@ -13,7 +13,6 @@ SET(LIBRARY_NAME ${PROJECT_NAME}_singletons)
 
 set(SOURCE
     ${SOURCE}
-    ${CMAKE_CURRENT_SOURCE_DIR}/data.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/imagemodel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/imageviewcontroller.cpp
@@ -21,7 +20,6 @@ set(SOURCE
 
 SET(HEADERS
     ${HEADERS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/data.h
     ${CMAKE_CURRENT_SOURCE_DIR}/logger.h
     ${CMAKE_CURRENT_SOURCE_DIR}/imagemodel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/imageviewcontroller.h

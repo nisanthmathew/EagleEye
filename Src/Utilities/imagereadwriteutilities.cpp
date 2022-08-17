@@ -1,6 +1,5 @@
 #include "imagereadwriteutilities.h"
 #include "itkutilities.h"
-#include "../Singletons/data.h"
 #include "../Singletons/logger.h"
 
 #include <QtWidgets/QFileDialog>

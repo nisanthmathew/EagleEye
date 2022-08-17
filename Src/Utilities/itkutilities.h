@@ -6,7 +6,6 @@
 #include <itkImage.h>
 #include <itkRGBPixel.h>
 #include "../Singletons/logger.h"
-#include "../Singletons/data.h"
 
 namespace EagleEye
 {

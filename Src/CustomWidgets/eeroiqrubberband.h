@@ -4,6 +4,8 @@
 #include <QPen>
 #include <QRubberBand>
 
+namespace EagleEye
+{
 class EEROIQRubberBand : public QRubberBand
 {
     Q_OBJECT
@@ -16,5 +18,5 @@ private:
 
     QPen m_ROIPen;
 };
-
+}
 #endif // EEQRUBBERBAND_H

@@ -2,11 +2,12 @@
 
 #include <QPaintEvent>
 #include <QPainter>
-
+namespace EagleEye {
 EEROIQRubberBand::EEROIQRubberBand(Shape shape, QWidget *parent)
-    : QRubberBand(shape, parent)
+    : QRubberBand(shape, parent),
+      m_ROIPen(SetupROIPen())
 {
-    m_ROIPen = SetupROIPen();
+
 }
 
 void EEROIQRubberBand::EEROIQRubberBand::paintEvent(QPaintEvent *event)
@@ -29,4 +30,5 @@ QPen EEROIQRubberBand::SetupROIPen()
     ROIPen.setDashPattern(dashes);
     ROIPen.setWidth(4);
     return ROIPen;
+}
 }

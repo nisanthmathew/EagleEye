@@ -3,7 +3,6 @@
 #include <QImageReader>
 #include <../Utilities/imagereadwriteutilities.h>
 #include <../Utilities/displayformatutilities.h>
-#include <../Singletons/data.h>
 class ImageReadWriteTest : public QObject
 {
     Q_OBJECT

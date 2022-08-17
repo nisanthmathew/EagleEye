@@ -9,7 +9,7 @@ ImageViewController::ImageViewController(QObject *parent, EagleEye::ImageModel *
     : QObject{parent},
       m_ImageModel(model)
 {
-
+    m_ImageViewLabel = this->parent()->findChild<QLabel *>("imageLabel");
 }
 
 bool ImageViewController::eventFilter(QObject *object, QEvent *e)
@@ -24,7 +24,7 @@ bool ImageViewController::eventFilter(QObject *object, QEvent *e)
     }
     case QEvent::Resize:
     {
-        m_ImageModel->ResizeImageLabel(this->parent()->findChild<QLabel *>("imageLabel")->size());
+        m_ImageModel->ResizeImageLabel(m_ImageViewLabel->size());
     }
     default:
         break;
@@ -50,5 +50,10 @@ void ImageViewController::OpenImage()
 void ImageViewController::SaveImageCopy()
 {
     m_ImageModel->SaveDisplayedImage();
+}
+
+void ImageViewController::SelectRectangularROI(bool startSelecting)
+{
+    m_ImageModel->SelectRectangularRegionOfInterest(startSelecting);
 }
 }

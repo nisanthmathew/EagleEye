@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "Singletons/data.h"
 #include "Singletons/logger.h"
 #include "Singletons/imagemodel.h"
 #include "Singletons/imageviewcontroller.h"
@@ -10,6 +9,7 @@
 #include "MenuItems/toolsmenu.h"
 #include "MenuItems/fileMenu.h"
 #include "MenuItems/imageprocessingmenu.h"
+#include "eeroiqrubberband.h"
 
 #include <QMainWindow>
 #include <QFileDialog>
@@ -22,8 +22,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
-class EEROIQRubberBand;
 
 class MainWindow : public QMainWindow
 {
@@ -40,7 +38,6 @@ private:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseMoveEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
-    void wheelEvent(QWheelEvent *e) override;
     QPoint MapPointToPixmap(QPoint point, QPixmap *pixmap);
 
     Ui::MainWindow *ui;
@@ -49,7 +46,7 @@ private:
     EagleEye::EEToolsMenu *m_ToolsMenu;
     EagleEye::EEFileMenu *m_FileMenu;
     EagleEye::EEImageProcessingMenu* m_ImageProcessingMenu;
-    std::unique_ptr<EEROIQRubberBand> m_Rubberband;
+    std::unique_ptr<EagleEye::EEROIQRubberBand> m_RectangularSelectedRegion;
     QPoint m_MouseStartPoint;
 };
 #endif // MAINWINDOW_H

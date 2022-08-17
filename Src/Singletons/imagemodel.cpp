@@ -1,4 +1,5 @@
 #include "imagemodel.h"
+
 namespace EagleEye{
 ImageModel::ImageModel(QObject *parent)
     : QStandardItemModel{parent},
@@ -40,6 +41,11 @@ void ImageModel::SetNewImage()
         SetData(ImageModel::OriginalImagePixmap, QVariant::fromValue(newPixmap));
         SetData(ImageModel::DisplayedImagePixmap, QVariant::fromValue(newPixmap));
         SetData(ImageModel::ActiveImagePath, QVariant::fromValue(filePath));
+        const int width = GetData<int>(ImageModel::ImageViewLabelWidth);
+        const int height = GetData<int>(ImageModel::ImageViewLabelHeight);
+        const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
+        newPixmap = newPixmap.scaled(width * zoomFactor, height * zoomFactor, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(newPixmap));
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("ImageModel::SetNewImage(): loading image %1").arg(filePath),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
     }
@@ -68,7 +74,7 @@ void ImageModel::SetZoomFactor(QWheelEvent *e)
     const int width = GetData<int>(ImageModel::ImageViewLabelWidth);
     const int height = GetData<int>(ImageModel::ImageViewLabelHeight);
     displayedPixmap = displayedPixmap.scaled(width * currentZoomFactor, height * currentZoomFactor, Qt::KeepAspectRatio,
-                           Qt::SmoothTransformation);
+                                             Qt::SmoothTransformation);
     SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(displayedPixmap));
 }
 
@@ -81,18 +87,18 @@ void ImageModel::ResizeImageLabel(const QSize &size)
     QPixmap displayedPixmap = GetData<QPixmap>(ImageModel::DisplayedImagePixmap);
     const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
     displayedPixmap = displayedPixmap.scaled(width * zoomFactor, height * zoomFactor, Qt::KeepAspectRatio,
-                           Qt::SmoothTransformation);
+                                             Qt::SmoothTransformation);
     SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(displayedPixmap));
 }
 
 void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
 {
     auto pixmapToBeProcessed = GetData<QPixmap>(EagleEye::ImageModel::DisplayedImagePixmap);
-    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI()) // use ROI option select the use the ROI image
+    if (GetData<bool>(EagleEye::ImageModel::SelectRectangularROI)) // use ROI option select the use the ROI image
     {
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("EEImageProcessingMenu::ConvertDisplayFormat(): ROI is valid, hence using it.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        pixmapToBeProcessed = EagleEye::Data::SINGLE_INSTANCE().GetROIPixmap();
+        pixmapToBeProcessed = GetData<QPixmap>(EagleEye::ImageModel::ROIPixmap);
     }
     QPixmap imageToBeDisplayed;
 
@@ -101,16 +107,34 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
     case EagleEye::DisplayFormats::GreyScale:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("EEImageProcessingMenu::ConvertDisplayFormat(): Converting to Greyscale.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        imageToBeDisplayed = CombineROIAndDisplayedPixmap(
-                    ConvertRGBToGreyScale(pixmapToBeProcessed),
-                    GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
+        if (GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
+        {
+            const int startX = GetData<QRect>(EagleEye::ImageModel::RectangularROI).topLeft().x();
+            const int startY = GetData<QRect>(EagleEye::ImageModel::RectangularROI).topLeft().y();
+            imageToBeDisplayed = CombineROIAndDisplayedPixmap(
+                        ConvertRGBToGreyScale(pixmapToBeProcessed),
+                        GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap), startX, startY);
+        }
+        else //if no ROI select simply return the roi pixmap
+        {
+            imageToBeDisplayed = ConvertRGBToGreyScale(pixmapToBeProcessed);
+        }
         break;
     case EagleEye::DisplayFormats::Edge:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::ConvertDisplayFormat(): Converting to Edge.",
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
-        imageToBeDisplayed = EagleEye::CombineROIAndDisplayedPixmap(
-                    EagleEye::ConvertRGBToEdges(pixmapToBeProcessed),
-                    GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
+        if (GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
+        {
+            const int startX = GetData<QRect>(EagleEye::ImageModel::RectangularROI).topLeft().x();
+            const int startY = GetData<QRect>(EagleEye::ImageModel::RectangularROI).topLeft().y();
+            imageToBeDisplayed = EagleEye::CombineROIAndDisplayedPixmap(
+                        EagleEye::ConvertRGBToEdges(pixmapToBeProcessed),
+                        GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap), startX, startY);
+        }
+        else //if no ROI select simply return the roi pixmap
+        {
+            imageToBeDisplayed = EagleEye::ConvertRGBToEdges(pixmapToBeProcessed);
+        }
         break;
     case EagleEye::DisplayFormats::Original:
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage("EEImageProcessingMenu::ConvertDisplayFormat(): Reverting to Greyscale.",
@@ -120,6 +144,13 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
     }
 
     SetData(EagleEye::ImageModel::DisplayedImagePixmap, QVariant::fromValue(imageToBeDisplayed));
+}
+
+void ImageModel::SelectRectangularRegionOfInterest(bool start)
+{
+    SetData(EagleEye::ImageModel::SelectRectangularROI, QVariant::fromValue(start));
+    SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(QPixmap()));
+    SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(QRect()));
 }
 
 }

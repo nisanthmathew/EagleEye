@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "eeroiqrubberband.h"
+
 
 #include <QAction>
 #include <QMessageBox>
@@ -13,24 +13,23 @@
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_Rubberband(nullptr)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setMinimumSize(1, 1);
     setWindowTitle("EagleEye");
 
     ui->imageLabel->setAlignment(Qt::AlignCenter);
-
+    m_RectangularSelectedRegion = std::unique_ptr<EagleEye::EEROIQRubberBand>(new EagleEye::EEROIQRubberBand(QRubberBand::Rectangle, ui->imageLabel));
+    m_RectangularSelectedRegion->setObjectName("EERectangularSelectedRegion");
     m_ImageModel = new EagleEye::ImageModel(this);
     connect(m_ImageModel, &EagleEye::ImageModel::dataChanged, this, &MainWindow::OnImageModelDataChanged);
 
     m_ImageViewController = new EagleEye::ImageViewController(this, m_ImageModel);
     this->installEventFilter(m_ImageViewController);
 
-
     m_FileMenu = new EagleEye::EEFileMenu(menuBar()->addMenu("&File"), m_ImageViewController);
-    m_ToolsMenu = new EagleEye::EEToolsMenu(menuBar()->addMenu("&Tools"));
+    m_ToolsMenu = new EagleEye::EEToolsMenu(menuBar()->addMenu("&Tools"), m_ImageViewController);
     m_ImageProcessingMenu = new EagleEye::EEImageProcessingMenu(menuBar()->addMenu("&Image Processing"), m_ImageViewController);
 }
 
@@ -60,54 +59,47 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
         ui->imageLabel->setPixmap(pixmap.scaled(ui->imageLabel->width() * zoomFactor, ui->imageLabel->height() * zoomFactor,
                                                     Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+
+    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)))
+    {
+        m_RectangularSelectedRegion->hide();
+        m_ImageModel->SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(QRect()));
+        m_ImageModel->SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(QPixmap()));
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     m_MouseStartPoint = ui->imageLabel->mapFrom(this, e->pos());
-    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI())
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
     {
-        if (!m_Rubberband)
-        {
-            m_Rubberband = std::unique_ptr<EEROIQRubberBand>(new EEROIQRubberBand(QRubberBand::Rectangle, ui->imageLabel));
-        }
-        m_Rubberband->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
-        m_Rubberband->show();
+        m_RectangularSelectedRegion->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
+        m_RectangularSelectedRegion->show();
     }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
     {
-        m_Rubberband->setGeometry(QRect(m_MouseStartPoint, ui->imageLabel->mapFrom(this, e->pos())).normalized());
+        m_RectangularSelectedRegion->setGeometry(QRect(m_MouseStartPoint, ui->imageLabel->mapFrom(this, e->pos())).normalized());
     }
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (EagleEye::Data::SINGLE_INSTANCE().GetSelectROI() && m_Rubberband)
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
     {
-        const auto rubberbandGeometry = m_Rubberband->geometry();
+        const auto rubberbandGeometry = m_RectangularSelectedRegion->geometry();
         if (rubberbandGeometry.width() == 0 || rubberbandGeometry.height() == 0)
             return;
 
-        QPixmap displayedPixmap = ui->imageLabel->pixmap(Qt::ReturnByValue);
+        QPixmap displayedPixmap = m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap);
         const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
         const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
         QRect ROI (topLeft, bottomRight);
-        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(ROI);
-        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(displayedPixmap.copy(ROI));
-    }
-}
-
-void MainWindow::wheelEvent(QWheelEvent *e)
-{
-    if (m_Rubberband)
-    {
-        m_Rubberband->hide();
-        EagleEye::Data::SINGLE_INSTANCE().SetROIPixmap(QPixmap());
-        EagleEye::Data::SINGLE_INSTANCE().SetRegionOfinterset(QRect());
+        m_ImageModel->SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(ROI));
+        m_ImageModel->SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(displayedPixmap.copy(ROI)));
     }
 }
 

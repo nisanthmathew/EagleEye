@@ -5,7 +5,11 @@
 #include <../Singletons/imagemodel.h>
 #include <../Utilities/displayformatutilities.h>
 
+
+class QLabel;
+
 namespace EagleEye {
+
 class ImageModel;
 
 class ImageViewController : public QObject
@@ -20,10 +24,12 @@ public slots:
     void ConvertImageDisplayFormat(EagleEye::DisplayFormats displayFormat);
     void OpenImage();
     void SaveImageCopy();
+    void SelectRectangularROI(bool startSelecting);
 
 private:
     bool eventFilter(QObject *object, QEvent *e) override;
     EagleEye::ImageModel *m_ImageModel;
+    QLabel *m_ImageViewLabel;
 
 };
 }

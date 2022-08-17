@@ -65,10 +65,12 @@ private:
     void SetZoomFactor(QWheelEvent *e);
     void ResizeImageLabel(const QSize &size);
     void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
+    void SelectRectangularRegionOfInterest(bool start);
 
-
-    //member variables
+    //member variables these are not set in the model as there is no need in notifying obeservers about them.
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;
+
 };
 }
+
 #endif // IMAGEMODEL_H
