@@ -51,11 +51,12 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
         ui->imageLabel->setPixmap(m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
     }
 
-    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)) )
+    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)) ||
+            range.contains(m_ImageModel->index(EagleEye::ImageModel::ZoomFactor)) ||
+            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageViewLabelHeight)) ||
+            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageViewLabelWidth)))
     {
-        m_RectangularSelectedRegion->hide();
-        m_ImageModel->SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(QRect()));
-        m_ImageModel->SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(QPixmap()));
+        m_RectangularSelectedRegion->hide(); // clear as already set ROI is not valid anymore
     }
 }
 
@@ -89,8 +90,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
         const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
         QRect ROI (topLeft, bottomRight);
-        m_ImageModel->SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(ROI));
-        m_ImageModel->SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(displayedPixmap.copy(ROI)));
+        m_ImageViewController->SetRectangularROI(ROI);
     }
 }
 

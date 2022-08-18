@@ -37,6 +37,11 @@ EagleEye::ImageModel *ImageViewController::GetImageModel() const
     return m_ImageModel;
 }
 
+void ImageViewController::SetRectangularROI(const QRect &ROI)
+{
+    m_ImageModel->SetRectangularROI(ROI);
+}
+
 void ImageViewController::ConvertImageDisplayFormat(DisplayFormats displayFormat)
 {
     m_ImageModel->ConvertDisplayFormat(displayFormat);

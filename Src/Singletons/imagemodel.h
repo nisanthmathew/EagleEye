@@ -64,8 +64,10 @@ private:
     void SaveDisplayedImage();
     void SetZoomFactor(QWheelEvent *e);
     void ResizeImageLabel(const QSize &size);
-    void ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat);
+    void ConvertDisplayFormat(const EagleEye::DisplayFormats displayFormat);
     void SelectRectangularRegionOfInterest(bool start);
+    void SetRectangularROI(const QRect &ROI);
+    void ClearRectangularROI();
 
     //member variables these are not set in the model as there is no need in notifying obeservers about them.
     std::unique_ptr<EagleEye::ImageReadWrite> m_ImageReadWrite;

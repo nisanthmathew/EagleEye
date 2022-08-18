@@ -20,6 +20,8 @@ public:
 
     EagleEye::ImageModel *GetImageModel() const;
 
+    void SetRectangularROI(const QRect &ROI);
+
 public slots:
     void ConvertImageDisplayFormat(EagleEye::DisplayFormats displayFormat);
     void OpenImage();

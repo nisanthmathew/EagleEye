@@ -41,10 +41,10 @@ void ImageModel::SetNewImage()
         SetData(ImageModel::OriginalImagePixmap, QVariant::fromValue(newPixmap));
         SetData(ImageModel::ActiveImagePath, QVariant::fromValue(filePath));
         SetData(ImageModel::DisplayedImagePixmap, QVariant::fromValue(newPixmap));
+        SetData(ImageModel::ZoomFactor, QVariant::fromValue(1.0f));
         const int width = GetData<int>(ImageModel::ImageViewLabelWidth);
         const int height = GetData<int>(ImageModel::ImageViewLabelHeight);
-        const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
-        newPixmap = newPixmap.scaled(width * zoomFactor, height * zoomFactor, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        newPixmap = newPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(newPixmap));
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("ImageModel::SetNewImage(): loading image %1").arg(filePath),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
@@ -76,6 +76,7 @@ void ImageModel::SetZoomFactor(QWheelEvent *e)
     displayedPixmap = displayedPixmap.scaled(width * currentZoomFactor, height * currentZoomFactor, Qt::KeepAspectRatio,
                                              Qt::SmoothTransformation);
     SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(displayedPixmap));
+    ClearRectangularROI();
 }
 
 void ImageModel::ResizeImageLabel(const QSize &size)
@@ -88,10 +89,11 @@ void ImageModel::ResizeImageLabel(const QSize &size)
     const float zoomFactor = GetData<float>(ImageModel::ZoomFactor);
     displayedPixmap = displayedPixmap.scaled(width * zoomFactor, height * zoomFactor, Qt::KeepAspectRatio,
                                              Qt::SmoothTransformation);
+    ClearRectangularROI();
     SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(displayedPixmap));
 }
 
-void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
+void ImageModel::ConvertDisplayFormat(const DisplayFormats displayFormat)
 {
     auto pixmapToBeProcessed = GetData<QPixmap>(EagleEye::ImageModel::DisplayedImagePixmap);
     if (GetData<bool>(EagleEye::ImageModel::SelectRectangularROI)) // use ROI option select the use the ROI image
@@ -154,6 +156,17 @@ void ImageModel::ConvertDisplayFormat(EagleEye::DisplayFormats displayFormat)
 void ImageModel::SelectRectangularRegionOfInterest(bool start)
 {
     SetData(EagleEye::ImageModel::SelectRectangularROI, QVariant::fromValue(start));
+    ClearRectangularROI();
+}
+
+void ImageModel::SetRectangularROI(const QRect &ROI)
+{
+    SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(ROI));
+    SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap).copy(ROI)));
+}
+
+void ImageModel::ClearRectangularROI()
+{
     SetData(EagleEye::ImageModel::ROIPixmap, QVariant::fromValue(QPixmap()));
     SetData(EagleEye::ImageModel::RectangularROI, QVariant::fromValue(QRect()));
 }
