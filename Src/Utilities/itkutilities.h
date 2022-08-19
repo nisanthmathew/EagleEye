@@ -11,24 +11,45 @@ namespace EagleEye
 {
 
 
-using EEPixelType = float;
-using EEImageType = itk::Image<EEPixelType, 2>;
-using EERGBPixelType = itk::RGBPixel<float>;
-using EERGBImageType = itk::Image<EERGBPixelType, 2>;
+using EEFloatPixelType = float;
+using EEFloatITKImageType = itk::Image<EEFloatPixelType, 2>;
 
+using EERGBITKPixelType = itk::RGBPixel<float>;
+using EERGBITKImageType = itk::Image<EERGBITKPixelType, 2>;
+
+template<typename T>
+using EEITKImageType = itk::Image<T, 2>;
+
+template<typename T>
+using EEITKImageSmartPointer = typename T::Pointer;
+
+template<typename T>
+using EEImageIndexType = typename T::IndexType;
+
+template<typename T>
+using EEImageSizeType = typename T::SizeType;
+
+template<typename T>
+using EEImageSizeType = typename T::SizeType;
+
+template<typename T>
+using EEImageRegionType = typename T::RegionType;
+
+template<typename T>
+using EEImagePixelType = typename T::PixelType;
 
 template <typename T>
-typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
+EEITKImageSmartPointer<T> EEQImageToITKImageAdapter(const QImage &qImage)
 {
 
-    typename T::Pointer image = nullptr;
-    itk::Image<itk::RGBPixel<float>, 2>::Pointer rgbImage  = nullptr;
-    typename T::IndexType start;
+    EEITKImageSmartPointer<T> image = nullptr;
+    EEITKImageSmartPointer<EERGBITKImageType> rgbImage  = nullptr;
+    EEImageIndexType<T> start;
 
     start[0] = 0; // first index on X
     start[1] = 0; // first index on Y
 
-    typename T::SizeType size;
+    EEImageSizeType<T> size;
     size[0] = qImage.width(); // size along X
     size[1] = qImage.height(); // size along Y
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
@@ -38,11 +59,11 @@ typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
                 QString("itkutilities::EEQImageToITKImageAdapter(): Input QImage image height is %1.").arg(qImage.height()),
                 EagleEye::LOGLEVEL::EE_DEBUG);
 
-    typename T::RegionType region;
+    EEImageRegionType<T> region;
     region.SetSize(size);
     region.SetIndex(start);
 
-    bool isRGBPixelType = (std::is_same<T,itk::RGBPixel<float>>::value);
+    bool isRGBPixelType = (std::is_same<EEImagePixelType<T>,itk::RGBPixel<float>>::value);
 
     if (!isRGBPixelType)
     {
@@ -54,16 +75,16 @@ typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
     }
     else
     {
-        rgbImage = itk::Image<itk::RGBPixel<float>, 2>::New();
+        rgbImage = EERGBITKImageType::New();
         rgbImage->SetRegions(region);
         rgbImage->Allocate();
         rgbImage->Update();
     }
 
-    itk::Image<itk::RGBPixel<float>, 2>::PixelType rgbPixel;
-    itk::Image<itk::RGBPixel<float>, 2>::IndexType rgbIndex;
-    typename T::PixelType tPixel;
-    typename itk::Image<T, 2>::IndexType tIndex;
+    EERGBITKPixelType rgbPixel;
+    EEImageIndexType<EERGBITKImageType> rgbIndex;
+    EEImagePixelType<T> inputImagePixel;
+    EEImageIndexType<T> inputImageIndex;
 
     for (int row = 0; row < qImage.height(); row++)
     {
@@ -79,10 +100,10 @@ typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
             }
             else
             {
-                tIndex[0] = col;
-                tIndex[1] = row;
-                tPixel = (qRed(rowData[col]) + qGreen(rowData[col]) + qBlue(rowData[col])) / 3;
-                image->SetPixel(tIndex, tPixel);
+                inputImageIndex[0] = col;
+                inputImageIndex[1] = row;
+                inputImagePixel = (qRed(rowData[col]) + qGreen(rowData[col]) + qBlue(rowData[col])) / 3;
+                image->SetPixel(inputImageIndex, inputImagePixel);
             }
         }
     }
@@ -101,7 +122,7 @@ typename T::Pointer EEQImageToITKImageAdapter(const QImage &qImage)
 
 
 template <typename  T>
-QImage EEITKImageToQImageAdapter(const typename itk::Image<T, 2>::Pointer itkImage)
+QImage EEITKImageToQImageAdapter(const EEITKImageSmartPointer<EEITKImageType<T>> itkImage)
 {
     const auto width = itkImage->GetLargestPossibleRegion().GetSize()[0];
     const auto height = itkImage->GetLargestPossibleRegion().GetSize()[1];
@@ -119,9 +140,9 @@ QImage EEITKImageToQImageAdapter(const typename itk::Image<T, 2>::Pointer itkIma
                 EagleEye::LOGLEVEL::EE_DEBUG);
 
     QImage qImage (QSize(width, height), QImage::Format_RGB32);
-    typename itk::Image<T, 2>::IndexType index;
+    EEImageIndexType<EEITKImageType<T>> index;
 
-    bool isRGBPixelType = (std::is_same<T,itk::RGBPixel<float>>::value);
+    bool isRGBPixelType = (std::is_same<T, EERGBITKPixelType>::value);
 
     for (int row = 0; row < height; row++)
     {
@@ -137,7 +158,7 @@ QImage EEITKImageToQImageAdapter(const typename itk::Image<T, 2>::Pointer itkIma
             }
             else
             {
-                itk::Image<itk::RGBPixel<float>, 2>::PixelType pixel = itkImage->GetPixel(index);
+                EERGBITKPixelType pixel = itkImage->GetPixel(index);
                 rowData[col] = qRgb(pixel.GetRed(), pixel.GetGreen(), pixel.GetBlue());
             }
         }

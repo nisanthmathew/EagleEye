@@ -20,18 +20,18 @@ ImageReadWrite::ImageReadWrite(QWidget *parent) : QWidget(nullptr)
 
 QPixmap EagleEye::ImageReadWrite::EELoadDicomImage(const QString &filePath)
 {
-    using ReaderType = itk::ImageFileReader<EEImageType>;
+    using ReaderType = itk::ImageFileReader<EEFloatITKImageType>;
     ReaderType::Pointer reader = ReaderType::New();
     reader->SetFileName(filePath.toStdString());
 
-    using RescaleType = itk::RescaleIntensityImageFilter<EEImageType, EEImageType>;
+    using RescaleType = itk::RescaleIntensityImageFilter<EEFloatITKImageType, EEFloatITKImageType>;
     RescaleType::Pointer rescale = RescaleType::New();
     rescale->SetInput(reader->GetOutput());
     rescale->SetOutputMinimum(0);
     rescale->SetOutputMaximum(255);
     rescale->Update();
 
-    const auto dicomImage = EEITKImageToQImageAdapter<EEPixelType>(rescale->GetOutput());
+    const auto dicomImage = EEITKImageToQImageAdapter<EEFloatPixelType>(rescale->GetOutput());
     return QPixmap::fromImage(dicomImage);
 }
 
