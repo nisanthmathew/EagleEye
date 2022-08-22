@@ -44,13 +44,13 @@ MainWindow::~MainWindow()
 void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
     const auto range = QItemSelectionRange(topLeft, bottomRight);
-    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageLabelPixmap)))
+    if (range.contains(m_ImageModel->GetIndex(EagleEye::ImageModelIndex::ImageLabelPixmap)))
     {
-        ui->imageLabel->setPixmap(m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
+        ui->imageLabel->setPixmap(m_ImageModel->GetData<QPixmap>(EagleEye::ImageModelIndex::ImageLabelPixmap));
     }
 
-    if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)) ||
-            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageLabelPixmap)))
+    if (range.contains(m_ImageModel->GetIndex(EagleEye::ImageModelIndex::SelectRectangularROI)) ||
+            range.contains(m_ImageModel->GetIndex(EagleEye::ImageModelIndex::ImageLabelPixmap)))
     {
         m_RectangularSelectedRegion->hide(); // clear as already set ROI is not valid anymore
     }
@@ -59,7 +59,7 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
     m_MouseStartPoint = ui->imageLabel->mapFrom(this, e->pos());
-    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModelIndex::SelectRectangularROI))
     {
         m_RectangularSelectedRegion->setGeometry(QRect(m_MouseStartPoint, QSize(0,0)));
         m_RectangularSelectedRegion->show();
@@ -68,7 +68,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModelIndex::SelectRectangularROI))
     {
         m_RectangularSelectedRegion->setGeometry(QRect(m_MouseStartPoint, ui->imageLabel->mapFrom(this, e->pos())).normalized());
     }
@@ -76,13 +76,13 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (m_ImageModel->GetData<bool>(EagleEye::ImageModel::SelectRectangularROI))
+    if (m_ImageModel->GetData<bool>(EagleEye::ImageModelIndex::SelectRectangularROI))
     {
         const auto rubberbandGeometry = m_RectangularSelectedRegion->geometry();
         if (rubberbandGeometry.width() == 0 || rubberbandGeometry.height() == 0)
             return;
 
-        QPixmap displayedPixmap = m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap);
+        QPixmap displayedPixmap = m_ImageModel->GetData<QPixmap>(EagleEye::ImageModelIndex::ImageLabelPixmap);
         const auto topLeft = MapPointToPixmap(rubberbandGeometry.topLeft(), &displayedPixmap);
         const auto bottomRight = MapPointToPixmap(rubberbandGeometry.bottomRight(), &displayedPixmap);
         QRect ROI (topLeft, bottomRight);
