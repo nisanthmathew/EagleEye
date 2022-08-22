@@ -58,7 +58,7 @@ public:
       return value;
     }
 
-    virtual QModelIndex	index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex	index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
     void TriggerDataChange(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
