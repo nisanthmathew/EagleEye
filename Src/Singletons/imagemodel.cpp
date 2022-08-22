@@ -48,6 +48,7 @@ void ImageModel::SetNewImage()
         SetData(ImageModel::ImageLabelPixmap, QVariant::fromValue(newPixmap));
         EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("ImageModel::SetNewImage(): loading image %1").arg(filePath),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
+        ClearRectangularROI();
     }
     else
     {
@@ -151,6 +152,7 @@ void ImageModel::ConvertDisplayFormat(const DisplayFormats displayFormat)
                 imageToBeDisplayed.scaled(GetData<int>(ImageModel::ImageViewLabelWidth) * zoomFactor,
                                           GetData<int>(ImageModel::ImageViewLabelHeight) * zoomFactor,
                                           Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    ClearRectangularROI();
 }
 
 void ImageModel::SelectRectangularRegionOfInterest(bool start)

@@ -46,15 +46,11 @@ void MainWindow::OnImageModelDataChanged(const QModelIndex &topLeft, const QMode
     const auto range = QItemSelectionRange(topLeft, bottomRight);
     if (range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageLabelPixmap)))
     {
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage("MainWindow::OnImageModelDataChanged(): ImageLabelPixmap changed.",
-                                                      EagleEye::LOGLEVEL::EE_DEBUG);
         ui->imageLabel->setPixmap(m_ImageModel->GetData<QPixmap>(EagleEye::ImageModel::ImageLabelPixmap));
     }
 
     if (range.contains(m_ImageModel->index(EagleEye::ImageModel::SelectRectangularROI)) ||
-            range.contains(m_ImageModel->index(EagleEye::ImageModel::ZoomFactor)) ||
-            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageViewLabelHeight)) ||
-            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageViewLabelWidth)))
+            range.contains(m_ImageModel->index(EagleEye::ImageModel::ImageLabelPixmap)))
     {
         m_RectangularSelectedRegion->hide(); // clear as already set ROI is not valid anymore
     }
