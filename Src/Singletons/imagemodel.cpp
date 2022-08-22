@@ -1,5 +1,10 @@
 #include "imagemodel.h"
 
+#include <../Singletons/logger.h>
+#include <../Singletons/imageviewcontroller.h>
+
+#include <../Utilities/displayformatutilities.h>
+
 namespace EagleEye{
 ImageModel::ImageModel(QObject *parent)
     : QStandardItemModel{parent},

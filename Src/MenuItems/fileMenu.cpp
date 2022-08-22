@@ -1,5 +1,7 @@
 #include "fileMenu.h"
+
 #include "../Singletons/logger.h"
+#include "../Singletons/imageviewcontroller.h"
 
 namespace EagleEye
 {

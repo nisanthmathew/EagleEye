@@ -2,13 +2,15 @@
 #define EEFLIEMENU_H
 
 #include "../Utilities/imagereadwriteutilities.h"
-#include "../Singletons/imageviewcontroller.h"
 
 #include <QMenu>
 #include <QAction>
 
 namespace EagleEye
 {
+
+class ImageViewController;
+
 class EEFileMenu : public QMenu
 {
     Q_OBJECT

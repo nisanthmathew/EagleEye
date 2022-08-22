@@ -2,15 +2,14 @@
 #define IMAGEVIEWCONTROLLER_H
 
 #include <QObject>
-#include <../Singletons/imagemodel.h>
-#include <../Utilities/displayformatutilities.h>
-
 
 class QLabel;
 
 namespace EagleEye {
 
+//forward declarations
 class ImageModel;
+enum class DisplayFormats;
 
 class ImageViewController : public QObject
 {

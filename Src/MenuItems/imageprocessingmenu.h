@@ -1,14 +1,15 @@
 #ifndef IMAGEPROCESSINGMENU_H
 #define IMAGEPROCESSINGMENU_H
 
-#include "../Utilities/displayformatutilities.h"
-#include "../Singletons/imageviewcontroller.h"
-
 #include <QMenu>
 #include <QAction>
 
 namespace EagleEye
 {
+
+class ImageViewController;
+enum class DisplayFormats;
+
 class EEImageProcessingMenu : public QMenu
 {
     Q_OBJECT

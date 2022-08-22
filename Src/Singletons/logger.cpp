@@ -7,16 +7,16 @@ void EagleEye::Logger::LogMessage(QString message, EagleEye::LOGLEVEL loglevel)
 {    
     std::string loglevelString;
     switch (loglevel) {
-    case EE_ERROR:
+    case LOGLEVEL::EE_ERROR:
         loglevelString = "Error";
         break;
-    case EE_WARNING:
+    case LOGLEVEL::EE_WARNING:
         loglevelString = "Warning";
         break;
-    case EE_INFO:
+    case LOGLEVEL::EE_INFO:
         loglevelString = "Info";
         break;
-    case EE_DEBUG:
+    case LOGLEVEL::EE_DEBUG:
         loglevelString = "Debug";
         break;
     default:

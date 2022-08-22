@@ -1,13 +1,14 @@
 #ifndef EETOOLSMENU_H
 #define EETOOLSMENU_H
 
-#include <../Singletons/imageviewcontroller.h>
-
 #include <QMenu>
 #include <QAction>
 
 namespace EagleEye
 {
+
+class ImageViewController;
+
 class EEToolsMenu : public QMenu
 {
     Q_OBJECT

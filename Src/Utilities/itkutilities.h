@@ -10,7 +10,6 @@
 namespace EagleEye
 {
 
-
 using EEFloatPixelType = float;
 using EEFloatITKImageType = itk::Image<EEFloatPixelType, 2>;
 

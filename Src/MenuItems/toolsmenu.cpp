@@ -1,5 +1,7 @@
 #include "toolsmenu.h"
 
+#include <../Singletons/imageviewcontroller.h>
+
 namespace EagleEye
 {
 EEToolsMenu::EEToolsMenu(QMenu *parent, EagleEye::ImageViewController *controller)

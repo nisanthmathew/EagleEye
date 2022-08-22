@@ -1,9 +1,6 @@
 #ifndef IMAGEMODEL_H
 #define IMAGEMODEL_H
 
-#include <../Singletons/logger.h>
-#include <../Singletons/imageviewcontroller.h>
-#include <../Utilities/displayformatutilities.h>
 #include <../Utilities/imagereadwriteutilities.h>
 
 #include <QObject>
@@ -11,6 +8,11 @@
 #include <QWheelEvent>
 
 namespace EagleEye {
+
+class Logger;
+class ImageViewController;
+enum class DisplayFormats;
+
 class ImageModel : public QStandardItemModel
 {
     Q_OBJECT

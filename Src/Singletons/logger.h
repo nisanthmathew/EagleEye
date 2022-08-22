@@ -11,7 +11,7 @@
 #include <fstream>
 
 namespace  EagleEye {
-enum LOGLEVEL
+enum class LOGLEVEL
 {
     EE_ERROR,
     EE_WARNING,

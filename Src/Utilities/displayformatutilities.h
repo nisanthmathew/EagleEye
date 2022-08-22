@@ -8,7 +8,7 @@
 namespace EagleEye
 {
 
-enum DisplayFormats
+enum class DisplayFormats
 {
     GreyScale = 0,
     Edge,
