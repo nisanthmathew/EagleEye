@@ -2,7 +2,6 @@
 
 #include <../Singletons/logger.h>
 #include <../Singletons/imageviewcontroller.h>
-
 #include <../Utilities/displayformatutilities.h>
 
 namespace EagleEye{

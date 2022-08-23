@@ -1,5 +1,7 @@
 #include "../Utilities/displayformatutilities.h"
 
+#include "imageprocessingutilities.h"
+
 namespace EagleEye
 {
 QPixmap ConvertRGBToGreyScale(const QPixmap &image)

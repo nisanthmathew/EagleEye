@@ -1,8 +1,6 @@
 #ifndef DISPLAYFORMAT_H
 #define DISPLAYFORMAT_H
 
-#include "imageprocessingutilities.h"
-
 #include <QPixmap>
 
 namespace EagleEye

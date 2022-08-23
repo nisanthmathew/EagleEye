@@ -1,11 +1,11 @@
 #include "imageviewcontroller.h"
 
-
 #include <../Singletons/imagemodel.h>
 
 #include <QEvent>
 #include <QLabel>
 #include <QWheelEvent>
+
 namespace EagleEye {
 
 ImageViewController::ImageViewController(QObject *parent, EagleEye::ImageModel *model)

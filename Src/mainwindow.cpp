@@ -1,15 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "Singletons/logger.h"
+#include "Singletons/imagemodel.h"
+#include "Singletons/imageviewcontroller.h"
+#include "MenuItems/toolsmenu.h"
+#include "MenuItems/fileMenu.h"
+#include "MenuItems/imageprocessingmenu.h"
+#include "eeroiqrubberband.h"
 
-#include <QAction>
-#include <QMessageBox>
-#include <QPainter>
-#include <QDate>
-#include <QRubberBand>
 #include <QItemSelectionRange>
-
-#include <iostream>
 
 
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),

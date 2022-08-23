@@ -1,5 +1,7 @@
 #include "imageprocessingutilities.h"
 
+#include "itkutilities.h"
+
 namespace EagleEye
 {
 

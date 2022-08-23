@@ -1,8 +1,6 @@
 #ifndef IMAGEPROCESSINGUTILITIES_H
 #define IMAGEPROCESSINGUTILITIES_H
 
-#include "itkutilities.h"
-
 #include <QPixmap>
 
 #include <itkImage.h>

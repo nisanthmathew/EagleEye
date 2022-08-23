@@ -1,23 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "Singletons/logger.h"
-#include "Singletons/imagemodel.h"
-#include "Singletons/imageviewcontroller.h"
-#include "Utilities/imagereadwriteutilities.h"
-#include "Utilities/displayformatutilities.h"
-#include "MenuItems/toolsmenu.h"
-#include "MenuItems/fileMenu.h"
-#include "MenuItems/imageprocessingmenu.h"
-#include "eeroiqrubberband.h"
-
 #include <QMainWindow>
-#include <QFileDialog>
-#include <QImageReader>
-#include <QResizeEvent>
 
 #include <memory>
 
+namespace EagleEye {
+class Logger;
+class ImageModel;
+class ImageViewController;
+class EEToolsMenu;
+class EEFileMenu;
+class EEImageProcessingMenu;
+class EEROIQRubberBand;
+}
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -9,7 +9,6 @@
 #include "itkImageFileReader.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageFileWriter.h"
-#include "itkNumericTraits.h"
 
 namespace EagleEye
 {
