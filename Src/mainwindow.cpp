@@ -20,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
     setWindowTitle("EagleEye");
 
     ui->imageLabel->setAlignment(Qt::AlignCenter);
-    m_RectangularSelectedRegion = std::unique_ptr<EagleEye::EEROIQRubberBand>(new EagleEye::EEROIQRubberBand(QRubberBand::Rectangle, ui->imageLabel));
-    m_RectangularSelectedRegion->setObjectName("EERectangularSelectedRegion");
+    m_RectangularSelectedRegion = new EagleEye::EEROIQRubberBand(QRubberBand::Rectangle, ui->imageLabel);
     m_ImageModel = new EagleEye::ImageModel(this);
     connect(m_ImageModel, &EagleEye::ImageModel::dataChanged, this, &MainWindow::OnImageModelDataChanged);
 
@@ -35,9 +34,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent),
 
 MainWindow::~MainWindow()
 {
-    delete m_FileMenu;
-    delete m_ToolsMenu;
-    delete m_ImageProcessingMenu;
     delete ui;
 }
 

@@ -39,10 +39,10 @@ private:
     Ui::MainWindow *ui;
     EagleEye::ImageModel *m_ImageModel;
     EagleEye::ImageViewController *m_ImageViewController;
-    EagleEye::EEToolsMenu *m_ToolsMenu;
     EagleEye::EEFileMenu *m_FileMenu;
+    EagleEye::EEToolsMenu *m_ToolsMenu;
     EagleEye::EEImageProcessingMenu* m_ImageProcessingMenu;
-    std::unique_ptr<EagleEye::EEROIQRubberBand> m_RectangularSelectedRegion;
+    EagleEye::EEROIQRubberBand *m_RectangularSelectedRegion;
     QPoint m_MouseStartPoint;
 };
 #endif // MAINWINDOW_H

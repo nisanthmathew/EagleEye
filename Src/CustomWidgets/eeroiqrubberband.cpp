@@ -2,6 +2,7 @@
 
 #include <QPaintEvent>
 #include <QPainter>
+
 namespace EagleEye {
 EEROIQRubberBand::EEROIQRubberBand(Shape shape, QWidget *parent)
     : QRubberBand(shape, parent),

@@ -38,8 +38,6 @@ class ImageModel : public QStandardItemModel
 public:
     explicit ImageModel(QObject *parent = nullptr);
 
-
-
     // setter and getter for data using ImageModelIndex
     template <typename T>
     bool SetData(ImageModelIndex imageModelIndex, const T &data)
