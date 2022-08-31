@@ -5,6 +5,8 @@
 #include "../Utilities/imageprocessingutilities.h"
 #include "../Utilities/displayformatutilities.h"
 
+#include <QAction>
+
 namespace EagleEye
 {
 EEImageProcessingMenu::EEImageProcessingMenu(QMenu *parent, EagleEye::ImageViewController *controller)

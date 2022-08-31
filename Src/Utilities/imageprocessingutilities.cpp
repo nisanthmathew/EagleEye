@@ -2,6 +2,13 @@
 
 #include "itkutilities.h"
 
+#include <itkImage.h>
+#include <itkImageFileReader.h>
+#include <itkImageFileWriter.h>
+#include <itkSobelEdgeDetectionImageFilter.h>
+
+#include <QPixmap>
+
 namespace EagleEye
 {
 

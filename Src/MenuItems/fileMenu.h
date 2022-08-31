@@ -4,7 +4,8 @@
 #include "../Utilities/imagereadwriteutilities.h"
 
 #include <QMenu>
-#include <QAction>
+
+class QAction;
 
 namespace EagleEye
 {

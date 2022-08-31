@@ -1,12 +1,7 @@
 #ifndef IMAGEPROCESSINGUTILITIES_H
 #define IMAGEPROCESSINGUTILITIES_H
 
-#include <QPixmap>
-
-#include <itkImage.h>
-#include <itkImageFileReader.h>
-#include <itkImageFileWriter.h>
-#include <itkSobelEdgeDetectionImageFilter.h>
+class QPixmap;
 
 namespace EagleEye
 {

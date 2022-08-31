@@ -2,6 +2,7 @@
 #define IMAGEREADWRITE_H
 
 #include <QtWidgets/QWidget>
+
 namespace EagleEye
 {
 class ImageReadWrite : public QWidget

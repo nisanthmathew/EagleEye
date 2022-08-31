@@ -2,7 +2,8 @@
 #define IMAGEPROCESSINGMENU_H
 
 #include <QMenu>
-#include <QAction>
+
+class QAction;
 
 namespace EagleEye
 {

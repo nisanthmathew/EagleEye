@@ -3,6 +3,8 @@
 #include "../Singletons/logger.h"
 #include "../Singletons/imageviewcontroller.h"
 
+#include <QAction>
+
 namespace EagleEye
 {
 EEFileMenu::EEFileMenu(QMenu *parent, EagleEye::ImageViewController *controller)
