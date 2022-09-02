@@ -15,7 +15,7 @@ namespace EagleEye
 QPixmap EEEdgeDetection(const QPixmap &image)
 {
 
-    auto itkGreyImage = EEQImageToITKImageAdapter<EEFloatITKImageType>(image.toImage());
+    const auto itkGreyImage = EEQImageToITKImageAdapter<EEFloatITKImageType>(image.toImage());
 
     using SobelFilterType = itk::SobelEdgeDetectionImageFilter<EEFloatITKImageType, EEFloatITKImageType>;
     SobelFilterType::Pointer sobelFilter = SobelFilterType::New();

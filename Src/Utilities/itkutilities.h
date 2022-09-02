@@ -62,7 +62,7 @@ EEITKImageSmartPointer<T> EEQImageToITKImageAdapter(const QImage &qImage)
     region.SetSize(size);
     region.SetIndex(start);
 
-    bool isRGBPixelType = (std::is_same<EEImagePixelType<T>,itk::RGBPixel<float>>::value);
+    const bool isRGBPixelType = (std::is_same<EEImagePixelType<T>,itk::RGBPixel<float>>::value);
 
     if (!isRGBPixelType)
     {
@@ -141,7 +141,7 @@ QImage EEITKImageToQImageAdapter(const EEITKImageSmartPointer<EEITKImageType<T>>
     QImage qImage (QSize(width, height), QImage::Format_RGB32);
     EEImageIndexType<EEITKImageType<T>> index;
 
-    bool isRGBPixelType = (std::is_same<T, EERGBITKPixelType>::value);
+    const bool isRGBPixelType = (std::is_same<T, EERGBITKPixelType>::value);
 
     for (int row = 0; row < height; row++)
     {
@@ -152,12 +152,12 @@ QImage EEITKImageToQImageAdapter(const EEITKImageSmartPointer<EEITKImageType<T>>
             index[1] = row;
             if (!isRGBPixelType)
             {
-                auto pixelValue = itkImage->GetPixel(index);
+                const auto pixelValue = itkImage->GetPixel(index);
                 rowData[col] = qRgb(pixelValue, pixelValue, pixelValue);
             }
             else
             {
-                EERGBITKPixelType pixel = itkImage->GetPixel(index);
+                const EERGBITKPixelType pixel = itkImage->GetPixel(index);
                 rowData[col] = qRgb(pixel.GetRed(), pixel.GetGreen(), pixel.GetBlue());
             }
         }

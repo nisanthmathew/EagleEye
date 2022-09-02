@@ -22,21 +22,21 @@ void EEImageProcessingMenu::AddImageProcessingActions()
 {
     QAction *greyScaleAction = new QAction(tr("&GreyScale"), this);
     m_ImageProcessingMenu->addAction(greyScaleAction);
-    connect(greyScaleAction, &QAction::triggered, [this](bool checked)
+    connect(greyScaleAction, &QAction::triggered, this, [this](bool checked)
     {
         emit ConvertImageDisplayFormat(EagleEye::DisplayFormats::GreyScale);
     });
 
     QAction *edgeDetectionAction = new QAction(tr("&Edge Detection"), this);
     m_ImageProcessingMenu->addAction(edgeDetectionAction);
-    connect(edgeDetectionAction, &QAction::triggered, [this](bool checked)
+    connect(edgeDetectionAction, &QAction::triggered, this, [this](bool checked)
     {
         emit ConvertImageDisplayFormat(EagleEye::DisplayFormats::Edge);
     });
 
     QAction *originalAction = new QAction(tr("&Original"), this);
     m_ImageProcessingMenu->addAction(originalAction);
-    connect(originalAction, &QAction::triggered, [this](bool checked)
+    connect(originalAction, &QAction::triggered, this, [this](bool checked)
     {
         emit ConvertImageDisplayFormat(EagleEye::DisplayFormats::Original);
     });
