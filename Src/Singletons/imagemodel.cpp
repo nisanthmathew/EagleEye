@@ -50,7 +50,7 @@ void ImageModel::SetNewImage()
         const int height = GetData<int>(ImageModelIndex::ImageViewLabelHeight);
         newPixmap = newPixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         SetData(ImageModelIndex::ImageLabelPixmap, QVariant::fromValue(newPixmap));
-        EagleEye::Logger::CENTRAL_LOGGER().LogMessage(QString("ImageModel::SetNewImage(): loading image %1").arg(filePath),
+        EagleEye::Logger::CENTRAL_LOGGER().LogMessage(("ImageModel::SetNewImage(): loading image ") + filePath.toStdString(),
                                                       EagleEye::LOGLEVEL::EE_DEBUG);
         ClearRectangularROI();
     }

@@ -52,10 +52,10 @@ EEITKImageSmartPointer<T> EEQImageToITKImageAdapter(const QImage &qImage)
     size[0] = qImage.width(); // size along X
     size[1] = qImage.height(); // size along Y
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEQImageToITKImageAdapter(): Input QImage image width is %1.").arg(qImage.width()),
+                ("itkutilities::EEQImageToITKImageAdapter(): Input QImage image width is ") + std::to_string(qImage.width()),
                 EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEQImageToITKImageAdapter(): Input QImage image height is %1.").arg(qImage.height()),
+                ("itkutilities::EEQImageToITKImageAdapter(): Input QImage image height is ") + std::to_string(qImage.height()),
                 EagleEye::LOGLEVEL::EE_DEBUG);
 
     EEImageRegionType<T> region;
@@ -108,12 +108,12 @@ EEITKImageSmartPointer<T> EEQImageToITKImageAdapter(const QImage &qImage)
     }
 
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEQImageToITKImageAdapter(): Output itkImage image width is %1.")
-                .arg(image->GetLargestPossibleRegion().GetSize()[0]),
+                ("itkutilities::EEQImageToITKImageAdapter(): Output itkImage image width is ") +
+                std::to_string(image->GetLargestPossibleRegion().GetSize()[0]),
             EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEQImageToITKImageAdapter(): Output itkImage image width is %1.")
-                .arg(image->GetLargestPossibleRegion().GetSize()[1]),
+                ("itkutilities::EEQImageToITKImageAdapter(): Output itkImage image width is ") +
+                std::to_string(image->GetLargestPossibleRegion().GetSize()[1]),
             EagleEye::LOGLEVEL::EE_DEBUG);
 
     return image;
@@ -126,16 +126,16 @@ QImage EEITKImageToQImageAdapter(const EEITKImageSmartPointer<EEITKImageType<T>>
     const auto width = itkImage->GetLargestPossibleRegion().GetSize()[0];
     const auto height = itkImage->GetLargestPossibleRegion().GetSize()[1];
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Input itkImage x spacing is %1.").arg(itkImage->GetSpacing()[0]),
+                ("itkutilities::EEITKImageToQImageAdapter(): Input itkImage x spacing is ") + std::to_string(itkImage->GetSpacing()[0]),
             EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Input itkImage y spacing is %1.").arg(itkImage->GetSpacing()[1]),
+                ("itkutilities::EEITKImageToQImageAdapter(): Input itkImage y spacing is ") + std::to_string(itkImage->GetSpacing()[1]),
             EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Input itkImage image width is %1.").arg(width),
+                ("itkutilities::EEITKImageToQImageAdapter(): Input itkImage image width is ") + std::to_string(width),
                 EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Input itkImage image width is %1.").arg(height),
+                ("itkutilities::EEITKImageToQImageAdapter(): Input itkImage image width is ") + std::to_string(height),
                 EagleEye::LOGLEVEL::EE_DEBUG);
 
     QImage qImage (QSize(width, height), QImage::Format_RGB32);
@@ -164,13 +164,13 @@ QImage EEITKImageToQImageAdapter(const EEITKImageSmartPointer<EEITKImageType<T>>
     }
 
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): isRGBPixelType %1.").arg(isRGBPixelType),
+                ("itkutilities::EEITKImageToQImageAdapter(): isRGBPixelType ") + std::to_string(isRGBPixelType),
                 EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Output QImage image width is %1.").arg(qImage.width()),
+                ("itkutilities::EEITKImageToQImageAdapter(): Output QImage image width is ") + std::to_string(qImage.width()),
                 EagleEye::LOGLEVEL::EE_DEBUG);
     EagleEye::Logger::CENTRAL_LOGGER().LogMessage(
-                QString("itkutilities::EEITKImageToQImageAdapter(): Output QImage image width is %1.").arg(qImage.height()),
+                ("itkutilities::EEITKImageToQImageAdapter(): Output QImage image width is ") + std::to_string(qImage.height()),
                 EagleEye::LOGLEVEL::EE_DEBUG);
 
     if (!isRGBPixelType)

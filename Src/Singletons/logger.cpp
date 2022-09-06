@@ -1,10 +1,10 @@
 #include "logger.h"
 
-#include <sstream>
+
 namespace EagleEye{
 
-void EagleEye::Logger::LogMessage(QString message, EagleEye::LOGLEVEL loglevel)
-{    
+void Logger::LogMessage(const std::string &message, EagleEye::LOGLEVEL loglevel)
+{
     std::string loglevelString;
     switch (loglevel) {
     case LOGLEVEL::EE_ERROR:
@@ -22,13 +22,16 @@ void EagleEye::Logger::LogMessage(QString message, EagleEye::LOGLEVEL loglevel)
     default:
         break;
     }
-    std::stringstream ss;
-    ss << QDateTime::currentDateTime().toString(Qt::ISODateWithMs).toStdString() <<
-          "; " << message.toStdString() << "; " << loglevelString;
     {
         QMutexLocker locker (m_LogMutex);
-        m_LogVector.push_back(ss.str());
+        m_LogVector.emplace_back(QDateTime::currentDateTime().toString(Qt::ISODateWithMs).toStdString() +
+                                                        "; " + message + "; " + loglevelString);
     }
-    std::cout << ss.str() << std::endl;
 }
+
+void Logger::SetLogtoConsole(const bool logtoConsole)
+{
+    m_LogToConsole = logtoConsole;
+}
+
 }

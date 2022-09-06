@@ -5,6 +5,7 @@
 
 #include <QAction>
 
+#include <chrono>
 namespace EagleEye
 {
 EEFileMenu::EEFileMenu(QMenu *parent, EagleEye::ImageViewController *controller)
